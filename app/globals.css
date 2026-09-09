@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand Color Tokens (Frames and Fera) */
+  --bg-primary: #f3d0bc;       /* Warm nude/peach background */
+  --text-primary: #211102;     /* Dark espresso/brown text */
+  --accent-muted: #d9b49e;     /* Subtraction/border accent */
+  --overlay-dark: rgba(33, 17, 2, 0.4);
+}
+
+@theme inline {
+  /* Map Brand Colors to Tailwind Utilities */
+  --color-brand-bg: var(--bg-primary);
+  --color-brand-text: var(--text-primary);
+  --color-brand-accent: var(--accent-muted);
+
+  /* Map Font Families to Tailwind Utilities */
+  --font-serif: var(--font-cormorant), serif;
+  --font-sans: var(--font-montserrat), sans-serif;
+}
+
+/* Default Base Elements */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-montserrat), sans-serif;
+}
+
+h1, h2, h3, h4, .font-serif-brand {
+  font-family: var(--font-cormorant), serif;
+}
