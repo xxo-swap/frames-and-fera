@@ -12,6 +12,18 @@ export interface FilmDeliverables {
   highlightUrl?: string;
   preWeddingFilmUrl?: string;
   fullWeddingFilmUrl?: string;
+  weddingFilmUrl?: string;
+}
+
+export type ClientService =
+  | 'Photography'
+  | 'Wedding Film'
+  | 'Pre-Wedding Film'
+  | 'Pre-Wedding Shoot';
+
+export interface ClientTestimonial {
+  quote: string;
+  narrative: string;
 }
 
 export interface ClientPortfolio {
@@ -21,10 +33,13 @@ export interface ClientPortfolio {
   venue: string;
   location: string;
   featuredCover: string;
+  coupleAvatar?: string;
   hasPhotoGallery: boolean;
+  services: ClientService[];
   eventTags: string[];
   films: FilmDeliverables;
   events: EventGallery[];
+  testimonial?: ClientTestimonial;
 }
 
 // Utility to generate sequential local image paths
@@ -45,10 +60,17 @@ export const clients: ClientPortfolio[] = [
     date: '2026-02-22',
     venue: 'Zana Luxury Resort',
     location: 'Jim Corbett, Uttarakhand',
-    featuredCover: '/clients/vasu-simar/wed/001.webp',
+    featuredCover: '/clients/vasu-simar/wed/068.webp',
+    
     hasPhotoGallery: true,
+    services: ['Photography'],
     eventTags: ['Haldi', 'Mehndi', 'Sangeet', 'Cocktail', 'Wedding'],
     films: {},
+    testimonial: {
+      quote: 'They captured the raw vulnerability and joy that no staged pose could ever touch.',
+      narrative:
+        'Looking through our gallery felt like reliving every emotion from Corbett. There was never any forced direction—just pure, unprompted moments between our families preserved with unmatched editorial honesty.',
+    },
     events: [
       {
         id: 'eng',
@@ -90,10 +112,16 @@ export const clients: ClientPortfolio[] = [
     date: '2025-11-20',
     venue: 'Amarai Farms',
     location: 'Chhatarpur, New Delhi',
-    featuredCover: '/clients/karan-bani/wed/001.webp',
+    featuredCover: '/clients/karan-bani/wed/052.webp',
     hasPhotoGallery: true,
+    services: ['Photography'],
     eventTags: ['Wedding'],
     films: {},
+    testimonial: {
+      quote: 'Effortless elegance. Every frame could live inside a fine art coffee table book.',
+      narrative:
+        'We were particular about avoiding cookie-cutter wedding photography. The team moved seamlessly in the background, letting us be ourselves and preserving the true spirit of our wedding night.',
+    },
     events: [
       {
         id: 'wed',
@@ -114,10 +142,19 @@ export const clients: ClientPortfolio[] = [
     date: '2026-02-05',
     venue: 'The Grand Nirvana',
     location: 'Bareilly, Uttar Pradesh',
-    featuredCover: '/clients/rishabh-aishwarya/wed/001.webp',
+    featuredCover: '/clients/rishabh-aishwarya/wed/024.webp',
     hasPhotoGallery: true,
-    eventTags: ['Engagement', 'Haldi', 'Mehndi', 'Wedding'],
-    films: {},
+    services: ['Photography', 'Wedding Film'],
+    eventTags: ['Engagement', 'Haldi', 'Mehndi', 'Wedding', 'Wedding Full Film', 'Wedding Teaser'],
+    films: {
+      teaserUrl: 'https://www.youtube.com/watch?v=PSq0BAAcmXY',
+      fullWeddingFilmUrl: 'https://www.youtube.com/watch?v=9MFkLC8Zfj0',
+    },
+    testimonial: {
+      quote: 'Our wedding teaser and full film felt like pure cinema, not a standard montage.',
+      narrative:
+        'The sensitivity with which they documented our celebrations blew us away. They captured the micro-interactions between our parents and friends that we completely missed in the whirlwind of the day.',
+    },
     events: [
       {
         id: 'eng',
@@ -154,6 +191,7 @@ export const clients: ClientPortfolio[] = [
     location: 'Jim Corbett, Uttarakhand',
     featuredCover: '/clients/manpreet-simran/wed/001.webp',
     hasPhotoGallery: true,
+    services: ['Photography'],
     eventTags: ['Wedding'],
     films: {},
     events: [
@@ -178,6 +216,7 @@ export const clients: ClientPortfolio[] = [
     location: 'Jim Corbett, Uttarakhand',
     featuredCover: '/clients/nitin-parika/wed/001.webp',
     hasPhotoGallery: true,
+    services: ['Photography'],
     eventTags: ['Engagement', 'Haldi', 'Wedding'],
     films: {},
     events: [
@@ -216,6 +255,7 @@ export const clients: ClientPortfolio[] = [
     location: 'Rishikesh, Uttarakhand',
     featuredCover: 'https://img.youtube.com/vi/vCvLHwNlJsA/maxresdefault.jpg',
     hasPhotoGallery: false,
+    services: ['Pre-Wedding Film'],
     eventTags: ['Pre-Wedding Film'],
     films: {
       preWeddingFilmUrl: 'https://www.youtube.com/watch?v=vCvLHwNlJsA',
@@ -234,10 +274,11 @@ export const clients: ClientPortfolio[] = [
     location: 'Chhatarpur, New Delhi',
     featuredCover: 'https://img.youtube.com/vi/wq2yRFZ8txc/maxresdefault.jpg',
     hasPhotoGallery: false,
+    services: ['Wedding Film'],
     eventTags: ['Engagement', 'Haldi', 'Sangeet', 'Wedding Film'],
     films: {
       teaserUrl: 'https://www.youtube.com/watch?v=wq2yRFZ8txc',
-      fullWeddingFilmUrl: 'https://www.youtube.com/watch?v=tTJQqUYD_R8',
+      weddingFilmUrl: 'https://www.youtube.com/watch?v=tTJQqUYD_R8',
     },
     events: [],
   },
@@ -253,6 +294,7 @@ export const clients: ClientPortfolio[] = [
     location: 'South Goa',
     featuredCover: 'https://img.youtube.com/vi/POq8-q09aFc/maxresdefault.jpg',
     hasPhotoGallery: false,
+    services: ['Wedding Film'],
     eventTags: ['Wedding Teaser'],
     films: {
       teaserUrl: 'https://www.youtube.com/watch?v=POq8-q09aFc',
@@ -271,9 +313,15 @@ export const clients: ClientPortfolio[] = [
     location: 'Palampur, Himachal Pradesh',
     featuredCover: 'https://img.youtube.com/vi/ZB9PBwdiwUM/maxresdefault.jpg',
     hasPhotoGallery: false,
+    services: ['Pre-Wedding Film'],
     eventTags: ['Pre-Wedding Film', 'Engagement'],
     films: {
       preWeddingFilmUrl: 'https://www.youtube.com/watch?v=ZB9PBwdiwUM',
+    },
+    testimonial: {
+      quote: 'Not your cliché pre-wedding film. Authentic, purpose-driven, and truly our story.',
+      narrative:
+        'We wanted something honest rather than slow-motion running through gardens. They built the film around what truly mattered to us, balancing purpose with our relationship in a way we will cherish forever.',
     },
     events: [],
   },
@@ -289,6 +337,7 @@ export const clients: ClientPortfolio[] = [
     location: 'Greater Noida, Uttar Pradesh',
     featuredCover: 'https://img.youtube.com/vi/kHxfIILV9Rw/maxresdefault.jpg',
     hasPhotoGallery: false,
+    services: ['Wedding Film'],
     eventTags: ['Wedding Teaser'],
     films: {
       teaserUrl: 'https://www.youtube.com/watch?v=kHxfIILV9Rw',
@@ -307,9 +356,15 @@ export const clients: ClientPortfolio[] = [
     location: 'Rudraprayag, Uttarakhand',
     featuredCover: 'https://img.youtube.com/vi/KQ3V3IqcAls/maxresdefault.jpg',
     hasPhotoGallery: false,
+    services: ['Wedding Film'],
     eventTags: ['Engagement', 'Haldi', 'Wedding Film'],
     films: {
-      fullWeddingFilmUrl: 'https://www.youtube.com/watch?v=KQ3V3IqcAls',
+      weddingFilmUrl: 'https://www.youtube.com/watch?v=KQ3V3IqcAls',
+    },
+    testimonial: {
+      quote: 'They captured the sanctity and grandeur of Triyuginarayan with sublime reverence.',
+      narrative:
+        'Filming an ancient temple wedding at altitude has its own challenges, but the team navigated the sacred rituals with complete respect and produced a film that moves us to tears every single watch.',
     },
     events: [],
   },

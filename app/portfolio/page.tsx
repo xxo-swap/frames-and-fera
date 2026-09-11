@@ -10,23 +10,21 @@ export const metadata: Metadata = {
 
 export default function PortfolioPage() {
   return (
-    <main className="min-h-screen bg-[#0f0e0d] text-[#e8e4df] font-sans antialiased selection:bg-[#c4a47c] selection:text-black">
-      {/* Editorial Archive Header */}
-      <header className="relative w-full border-b border-white/10 pt-28 pb-16 px-6 sm:px-12 md:px-20 bg-gradient-to-b from-[#141211] to-[#0f0e0d]">
+    <main className="my-16 min-h-screen bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-accent selection:text-brand-bg">
+      <header className="relative w-full border-b border-brand-accent/40 pt-28 pb-16 px-6 sm:px-12 md:px-20">
         <div className="max-w-7xl mx-auto space-y-4">
-          <span className="text-xs uppercase tracking-[0.3em] text-[#c4a47c]">
-            Visual Archive
+          <span className="text-xs uppercase tracking-[0.3em] text-brand-accent">
+            Archive
           </span>
-          <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl tracking-tight leading-[0.9] font-light text-[#f5f2eb]">
+          <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl tracking-tight leading-[0.9] font-light text-brand-text">
             Selected Stories
           </h1>
-          <p className="text-sm sm:text-base text-white/50 max-w-xl font-light pt-2">
+          <p className="text-sm sm:text-base text-brand-text/60 max-w-xl font-light pt-2">
             Capturing unscripted human emotion and cinematic celebrations across destination venues.
           </p>
         </div>
       </header>
 
-      {/* Interactive Gallery Section */}
       <section className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 py-16">
         <PortfolioGrid initialClients={clients} />
       </section>

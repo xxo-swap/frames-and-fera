@@ -15,39 +15,45 @@ type FilterCategory = "ALL" | "PHOTO" | "FILM" | "PRE_WED";
 export default function PortfolioGrid({ initialClients }: Props) {
   const [activeFilter, setActiveFilter] = useState<FilterCategory>("ALL");
 
-  // Determine deliverables badge dynamically
   const getDeliverableLabel = (client: ClientPortfolio) => {
-    const isPreWed = client.eventTags.some((t) =>
-      t.toLowerCase().includes("pre-wedding")
-    );
-    if (isPreWed) return "Pre-Wedding";
+    if (client.services?.includes("Pre-Wedding Film") || client.services?.includes("Pre-Wedding Shoot")) {
+      return "Pre-Wedding";
+    }
 
-    const hasFilm = Boolean(
-      client.films.teaserUrl ||
-      client.films.fullWeddingFilmUrl ||
-      client.films.highlightUrl
+    const hasFilm = client.services?.includes("Wedding Film") || Boolean(
+      client.films?.teaserUrl ||
+      client.films?.fullWeddingFilmUrl ||
+      client.films?.weddingFilmUrl ||
+      client.films?.highlightUrl
     );
-    const hasPhoto = client.hasPhotoGallery;
+    const hasPhoto = client.services?.includes("Photography") || client.hasPhotoGallery;
 
     if (hasFilm && hasPhoto) return "Film & Photo";
     if (hasFilm) return "Cinematic Film";
     return "Photography";
   };
 
-  // Filter clients based on user selection
   const filteredClients = initialClients.filter((client) => {
     if (activeFilter === "ALL") return true;
-    if (activeFilter === "PHOTO") return client.hasPhotoGallery;
+    if (activeFilter === "PHOTO") {
+      return client.services?.includes("Photography") || client.hasPhotoGallery;
+    }
     if (activeFilter === "FILM") {
-      return Boolean(
-        client.films.teaserUrl ||
-        client.films.fullWeddingFilmUrl ||
-        client.films.highlightUrl
+      return (
+        client.services?.includes("Wedding Film") ||
+        Boolean(
+          client.films?.teaserUrl ||
+          client.films?.fullWeddingFilmUrl ||
+          client.films?.weddingFilmUrl ||
+          client.films?.highlightUrl
+        )
       );
     }
     if (activeFilter === "PRE_WED") {
-      return client.eventTags.some((t) =>
-        t.toLowerCase().includes("pre-wedding")
+      return (
+        client.services?.includes("Pre-Wedding Film") ||
+        client.services?.includes("Pre-Wedding Shoot") ||
+        client.eventTags?.some((t) => t.toLowerCase().includes("pre-wedding"))
       );
     }
     return true;
@@ -63,7 +69,7 @@ export default function PortfolioGrid({ initialClients }: Props) {
   return (
     <div className="space-y-12">
       {/* Category Filter Tabs */}
-      <nav className="flex items-center space-x-6 sm:space-x-10 border-b border-white/10 pb-4 overflow-x-auto scrollbar-none">
+      <nav className="flex items-center space-x-6 sm:space-x-10 border-b border-brand-accent/40 pb-4 overflow-x-auto no-scrollbar">
         {filterTabs.map((tab) => {
           const isSelected = activeFilter === tab.key;
           return (
@@ -71,74 +77,123 @@ export default function PortfolioGrid({ initialClients }: Props) {
               key={tab.key}
               type="button"
               onClick={() => setActiveFilter(tab.key)}
-              className={`relative text-xs tracking-[0.2em] uppercase pb-2 whitespace-nowrap cursor-pointer transition-colors duration-200 ${
+              className={`relative text-xs tracking-[0.2em] uppercase pb-2 whitespace-nowrap cursor-pointer transition-colors duration-200 select-none ${
                 isSelected
-                  ? "text-[#c4a47c] font-medium"
-                  : "text-white/40 hover:text-white"
+                  ? "text-brand-text font-medium"
+                  : "text-brand-text/50 hover:text-brand-text"
               }`}
             >
               {tab.label}
               {isSelected && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#c4a47c]" />
+                <span className="absolute bottom-[-1px] left-0 right-0 h-[1.5px] bg-brand-text" />
               )}
             </button>
           );
         })}
       </nav>
 
-      {/* Grid of Client Stories */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
-        {filteredClients.map((client) => {
+      {/* Dynamic Single-Column Horizontal Rows */}
+      <div className="flex flex-col divide-y divide-brand-accent/30">
+        {filteredClients.map((client, idx) => {
           const categoryBadge = getDeliverableLabel(client);
+          const year = client.date ? new Date(client.date).getFullYear() : "2026";
+          const isReversed = idx % 2 !== 0;
+
+          // Resolve display services
+          const displayServices =
+            client.services && client.services.length > 0
+              ? client.services
+              : [categoryBadge];
 
           return (
-            <Link
+            <div
               key={client.slug}
-              href={`/portfolio/${client.slug}`}
-              className="group flex flex-col space-y-4 cursor-pointer"
+              className="group py-12 md:py-20 first:pt-0 last:pb-0"
             >
-              {/* Card Thumbnail */}
-              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-sm bg-white/[0.02] border border-white/10 transition-all duration-500 group-hover:border-white/30">
-                <Image
-                  src={client.featuredCover}
-                  alt={`${client.coupleNames} Wedding at ${client.venue}`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  loading="lazy"
-                />
+              <Link
+                href={`/portfolio/${client.slug}`}
+                className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center cursor-pointer"
+              >
+                {/* 1. Dynamic Natural-Aspect Image Frame */}
+                <div
+                  className={`w-full lg:col-span-7 flex ${
+                    isReversed ? "lg:order-2 justify-end" : "lg:order-1 justify-start"
+                  }`}
+                >
+                  <div className="relative w-fit max-w-full overflow-hidden bg-brand-accent/10 border border-brand-accent/30 transition-colors duration-500 group-hover:border-brand-accent">
+                    <Image
+                      src={client.featuredCover}
+                      alt={`${client.coupleNames} Wedding at ${client.venue}`}
+                      width={0}
+                      height={0}
+                      sizes="(max-width: 1024px) 100vw, 60vw"
+                      priority={idx === 0}
+                      className="w-auto h-auto max-w-full max-h-[75vh] object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                    />
 
-                {/* Subtle dark vignette on hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
+                    {/* Primary Badge */}
+                    <div className="absolute top-3 left-3 z-10">
+                      <span className="px-2.5 py-1 text-[10px] uppercase tracking-[0.2em] bg-brand-bg/90 backdrop-blur-sm border border-brand-accent/30 text-brand-text">
+                        {categoryBadge}
+                      </span>
+                    </div>
 
-                {/* Top Badge: Service Category */}
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] bg-black/60 backdrop-blur-md border border-white/10 text-white/80 rounded-full">
-                    {categoryBadge}
-                  </span>
+                    {/* Index Tag */}
+                    <div className="absolute top-3 right-3 z-10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-brand-text bg-brand-bg/90 backdrop-blur-sm border border-brand-accent/30">
+                      {String(idx + 1).padStart(2, "0")}
+                    </div>
+                  </div>
                 </div>
 
-                {/* Bottom Overlay: Location Info */}
-                <div className="absolute bottom-4 left-4 right-4 text-white/90 transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-[#c4a47c]">
-                    {client.location}
-                  </p>
-                </div>
-              </div>
+                {/* 2. Editorial Metadata & Context */}
+                <div
+                  className={`lg:col-span-5 flex flex-col justify-between self-center py-2 ${
+                    isReversed ? "lg:order-1" : "lg:order-2"
+                  }`}
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between font-sans text-xs uppercase tracking-[0.25em] text-brand-text/60">
+                      <span>{client.location}</span>
+                      <span>{year}</span>
+                    </div>
 
-              {/* Card Meta details */}
-              <div className="space-y-1">
-                <h2 className="font-serif text-2xl sm:text-3xl font-light text-[#f5f2eb] tracking-wide group-hover:text-[#c4a47c] transition-colors duration-300">
-                  {client.coupleNames}
-                </h2>
-                <div className="flex items-center justify-between text-xs text-white/40 font-light">
-                  <span className="line-clamp-1">{client.venue}</span>
-                  <span className="whitespace-nowrap ml-2">
-                    {new Date(client.date).getFullYear()}
-                  </span>
+                    <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl uppercase tracking-tight text-brand-text group-hover:italic transition-all leading-[1.05]">
+                      {client.coupleNames}
+                    </h2>
+
+                    <p className="font-sans text-xs text-brand-text/50 uppercase tracking-widest leading-relaxed">
+                      {client.events?.map((e) => e.name).join(" • ") || client.venue}
+                    </p>
+
+                    {/* Commissioned Services Pills */}
+                    <div className="pt-2 space-y-2">
+                      <span className="text-[10px] uppercase tracking-[0.25em] text-brand-text/40 block">
+                        Services Commissioned
+                      </span>
+                      <div className="flex flex-wrap gap-2">
+                        {displayServices.map((service) => (
+                          <span
+                            key={service}
+                            className="px-2.5 py-1 text-[10px] uppercase tracking-[0.15em] border border-brand-accent/40 bg-brand-accent/10 rounded-full text-brand-text/80 font-light"
+                          >
+                            {service}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-8 lg:pt-12">
+                    <span className="inline-flex items-center gap-3 font-sans text-xs uppercase tracking-[0.25em] text-brand-text border-b border-brand-text/80 pb-1 group-hover:border-brand-accent transition-colors">
+                      View Story Framing
+                      <span className="transition-transform duration-300 group-hover:translate-x-1.5">
+                        →
+                      </span>
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
           );
         })}
       </div>
@@ -146,7 +201,7 @@ export default function PortfolioGrid({ initialClients }: Props) {
       {/* Fallback if a filter returns empty */}
       {filteredClients.length === 0 && (
         <div className="py-20 text-center">
-          <p className="font-serif text-2xl italic text-white/40">
+          <p className="font-serif text-2xl italic text-brand-text/60">
             No stories found in this category.
           </p>
         </div>

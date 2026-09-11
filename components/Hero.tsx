@@ -1,11 +1,63 @@
 'use client';
 
-import { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { clients } from '@/data/client';
+
+export interface HeroSlide {
+  src: string;
+  coupleNames: string;
+  location: string;
+  venue: string;
+  slug: string;
+  alt?: string;
+}
+
+// Handpick your hero imagery, order, and pairings directly here
+export const HERO_SLIDES: HeroSlide[] = [
+  {
+    src: '/clients/vasu-simar/wed/068.webp',
+    coupleNames: 'Simar & Vasu',
+    location: 'Jim Corbett, Uttarakhand',
+    venue: 'Zana Luxury Resort',
+    slug: 'vasu-simar',
+    alt: 'Simar & Vasu Wedding Ceremony at Jim Corbett',
+  },
+  {
+    src: '/clients/rishabh-aishwarya/wed/026.webp',
+    coupleNames: 'Rishabh & Aishwarya',
+    location: 'Bareilly, Uttar Pradesh',
+    venue: 'The Grand Nirvana',
+    slug: 'rishabh-aishwarya',
+    alt: 'Rishabh & Aishwarya Vows at Bareilly',
+  },
+  {
+    src: '/clients/karan-bani/wed/001.webp',
+    coupleNames: 'Karan & Bani',
+    location: 'Chhatarpur, New Delhi',
+    venue: 'Amarai Farms',
+    slug: 'karan-bani',
+    alt: 'Karan & Bani Evening Celebrations in New Delhi',
+  },
+  {
+    src: '/clients/manpreet-simran/wed/050.webp',
+    coupleNames: 'Manpreet & Simran',
+    location: 'Jim Corbett, Uttarakhand',
+    venue: 'Zana Luxury Resort',
+    slug: 'manpreet-simran',
+    alt: 'Manpreet & Simran Sunset Moments',
+  },
+  {
+    src: '/clients/nitin-parika/wed/002.webp',
+    coupleNames: 'Nitin & Parika',
+    location: 'Jim Corbett, Uttarakhand',
+    venue: 'Zana Luxury Resort',
+    slug: 'nitin-parika',
+    alt: 'Nitin & Parika Wedding Moments',
+  },
+];
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -15,25 +67,10 @@ export default function Hero() {
   const incomingSlideRef = useRef<HTMLDivElement>(null);
   const bottomBarRef = useRef<HTMLDivElement>(null);
 
-  const carouselSlides = useMemo(() => {
-    return clients
-      .filter((c) => c.hasPhotoGallery && c.events && c.events.length > 0)
-      .flatMap((client) => {
-        const allClientImages = client.events.flatMap((evt) => evt.images);
-        return allClientImages.slice(0, 2).map((src, index) => ({
-          src,
-          coupleNames: client.coupleNames,
-          location: client.location,
-          venue: client.venue,
-          slug: client.slug,
-          alt: `${client.coupleNames} — Frame ${index + 1}`,
-        }));
-      });
-  }, []);
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
 
+  // Initial entrance animation
   useGSAP(
     () => {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -59,6 +96,7 @@ export default function Hero() {
     { scope: heroRef }
   );
 
+  // Crossfade slide transition
   useGSAP(
     () => {
       if (prevIndex === null) return;
@@ -94,30 +132,31 @@ export default function Hero() {
   );
 
   const nextSlide = useCallback(() => {
-    if (carouselSlides.length === 0) return;
-    goToSlide((currentIndex + 1) % carouselSlides.length);
-  }, [carouselSlides.length, currentIndex, goToSlide]);
+    if (HERO_SLIDES.length === 0) return;
+    goToSlide((currentIndex + 1) % HERO_SLIDES.length);
+  }, [currentIndex, goToSlide]);
 
   const prevSlide = useCallback(() => {
-    if (carouselSlides.length === 0) return;
-    goToSlide((currentIndex - 1 + carouselSlides.length) % carouselSlides.length);
-  }, [carouselSlides.length, currentIndex, goToSlide]);
+    if (HERO_SLIDES.length === 0) return;
+    goToSlide((currentIndex - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  }, [currentIndex, goToSlide]);
 
+  // Autoplay interval
   useEffect(() => {
-    if (carouselSlides.length <= 1) return;
+    if (HERO_SLIDES.length <= 1) return;
     const interval = setInterval(nextSlide, 6000);
     return () => clearInterval(interval);
-  }, [carouselSlides.length, nextSlide]);
+  }, [nextSlide]);
 
-  const currentItem = carouselSlides[currentIndex];
-  const previousItem = prevIndex !== null ? carouselSlides[prevIndex] : null;
+  const currentItem = HERO_SLIDES[currentIndex];
+  const previousItem = prevIndex !== null ? HERO_SLIDES[prevIndex] : null;
 
   return (
     <section
       ref={heroRef}
       className="relative w-full h-[100dvh] flex flex-col justify-end p-6 sm:p-10 md:p-14 lg:p-16 pt-28 sm:pt-32 md:pt-36 overflow-hidden bg-brand-bg text-brand-text"
     >
-      {/* 1. Fullscreen Background Underneath Everything */}
+      {/* 1. Fullscreen Background */}
       <div
         ref={carouselWrapperRef}
         className="absolute inset-0 z-0 w-full h-full overflow-hidden select-none"
@@ -129,7 +168,7 @@ export default function Hero() {
           >
             <Image
               src={previousItem.src}
-              alt={previousItem.alt}
+              alt={previousItem.alt || previousItem.coupleNames}
               fill
               sizes="100vw"
               className="object-cover object-center"
@@ -139,15 +178,15 @@ export default function Hero() {
 
         {currentItem && (
           <div
-            key={currentItem.src}
+            key={`slide-${currentIndex}`}
             ref={incomingSlideRef}
             className="absolute inset-0 z-10 will-change-[opacity,transform]"
           >
             <Image
               src={currentItem.src}
-              alt={currentItem.alt}
+              alt={currentItem.alt || currentItem.coupleNames}
               fill
-              priority
+              priority={currentIndex === 0}
               sizes="100vw"
               className="object-cover object-center"
             />
@@ -158,14 +197,15 @@ export default function Hero() {
         <div className="absolute inset-0 z-20 bg-gradient-to-b from-[#211102]/65 via-[#211102]/30 to-[#211102]/80 pointer-events-none" />
       </div>
 
-      {/* 2. Top Headline (Sits cleanly beneath the overlay header) */}
-      <div className="relative z-30 w-full max-w-4xl ">
-       
+      {/* 2. Top Headline */}
+      <div className="relative z-30 w-full max-w-4xl">
         <h1
           ref={headlineRef}
           className="font-serif text-4xl italic sm:text-6xl md:text-7xl lg:text-8xl font-normal leading-[0.95] text-brand-bg tracking-tight"
         >
-          Capturing <br /> Real<span className="italic font-light text-brand-accent"> Moments</span> <br />Real <span className="italic font-light text-brand-accent"> Emotions.</span> 
+          Capturing <br /> Real
+          <span className="italic font-light text-brand-accent"> Moments</span> <br />
+          Real <span className="italic font-light text-brand-accent"> Emotions.</span>
         </h1>
       </div>
 
@@ -196,7 +236,7 @@ export default function Hero() {
 
         <div className="flex items-center gap-6">
           <span className="font-sans text-xs uppercase tracking-[0.25em] text-brand-bg/70 tabular-nums">
-            {String(currentIndex + 1).padStart(2, '0')} / {String(carouselSlides.length).padStart(2, '0')}
+            {String(currentIndex + 1).padStart(2, '0')} / {String(HERO_SLIDES.length).padStart(2, '0')}
           </span>
 
           <div className="flex items-center gap-2">

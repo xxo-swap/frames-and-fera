@@ -3,18 +3,22 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { href: "/about", label: "About" },
-  { href: "/photography", label: "Photo Gallery" },
-  { href: "/films", label: "Films" },
-  { href: "/inquire", label: "Inquire" },
+  { href: "/photography", label: "Photo Portfolio" },
+  { href: "/films", label: "Films Portfolio" },
+  { href: "/inquiry", label: "Inquire" },
 ];
 
 export default function Header() {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
   const [isOpen, setIsOpen] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
 
@@ -22,17 +26,19 @@ export default function Header() {
   const menuRef = useRef<HTMLDivElement>(null);
   const linksRef = useRef<HTMLUListElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
-
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
-  // Scroll visibility logic: visible only when scrolled back to the top
+  // Close mobile menu automatically on route change
+  useEffect(() => {
+    if (isOpen) {
+      closeMenu();
+    }
+  }, [pathname]);
+
+  // Scroll visibility logic
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY < 20) {
-        setIsAtTop(true);
-      } else {
-        setIsAtTop(false);
-      }
+      setIsAtTop(window.scrollY < 20);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -119,10 +125,6 @@ export default function Header() {
     }
   };
 
-  const log = () => {
-    console.log("clicked");
-  };
-
   return (
     <div
       ref={containerRef}
@@ -135,21 +137,22 @@ export default function Header() {
       {/* =========================
           MAIN HEADER
       ========================== */}
-      <header className="relative top-0 z-[100] w-full   px-6 py-4 md:px-12">
+      <header className="relative top-0 z-[100] w-full px-6 py-4 md:px-12">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          {/* Logo */}
+          {/* Logo: Inverted to white over dark hero, normal dark on editorial interior pages */}
           <Link
-            onClick={log}
             href="/"
             className="group relative z-[110] flex items-center"
           >
             <Image
-              src="/blackLogoC.png"
+              src={isHomePage && !isOpen ? "/whiteLogo.png" : "/blackLogo.png"}
               alt="Frames & Fera"
               width={150}
               height={60}
               priority
-              className="h-auto w-[120px] object-contain md:w-[110px]"
+              className={`h-auto w-[120px] object-contain md:w-[110px] transition-all duration-300 scale-200 ${
+                isHomePage && !isOpen ? "brightness-0 invert" : ""
+              }`}
             />
           </Link>
 
@@ -157,15 +160,26 @@ export default function Header() {
               DESKTOP NAV
           ========================== */}
           <nav className="hidden items-center space-x-8 md:flex">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="border-b text-brand-primary border-transparent font-sans text-xs uppercase tracking-[0.2em] py-1 px-2 transition-all duration-600"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`border-b font-sans text-xs uppercase tracking-[0.2em] py-1 px-2 transition-all duration-300 ${
+                    isHomePage
+                      ? isActive
+                        ? "text-brand-accent border-brand-accent"
+                        : "text-brand-accent/90 border-transparent hover:text-brand-accent hover:border-brand-accent/60"
+                      : isActive
+                      ? "text-brand-text border-brand-text font-medium"
+                      : "text-brand-text/70 border-transparent hover:text-brand-text hover:border-brand-text/50"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* =========================
@@ -174,12 +188,13 @@ export default function Header() {
           <button
             type="button"
             onClick={toggleMenu}
-            className="relative z-[110] p-3 text-brand-text md:hidden"
+            className={`relative z-[110] p-3 transition-colors duration-300 md:hidden cursor-pointer ${
+              isHomePage && !isOpen ? "text-white" : "text-brand-text"
+            }`}
             aria-label={isOpen ? "Close menu" : "Open menu"}
             aria-expanded={isOpen}
           >
             <span className="relative block h-[26px] w-[26px]">
-              {/* Menu icon */}
               <Menu
                 size={26}
                 strokeWidth={1.5}
@@ -188,7 +203,6 @@ export default function Header() {
                 }`}
               />
 
-              {/* Close icon */}
               <X
                 size={26}
                 strokeWidth={1.5}
@@ -211,7 +225,6 @@ export default function Header() {
           perspective: "1000px",
         }}
       >
-        {/* Navigation */}
         <nav className="my-auto">
           <ul ref={linksRef} className="space-y-4 text-center">
             {navLinks.map((link) => (
@@ -225,7 +238,6 @@ export default function Header() {
                     {link.label}
                   </span>
 
-                  {/* Animated underline */}
                   <span className="absolute bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-brand-text transition-all duration-500 ease-out group-hover:w-full" />
                 </Link>
               </li>
@@ -233,9 +245,6 @@ export default function Header() {
           </ul>
         </nav>
 
-        {/* =========================
-            MOBILE FOOTER
-        ========================== */}
         <div
           ref={footerRef}
           className="border-t border-brand-text/15 pb-2 pt-6 text-center"

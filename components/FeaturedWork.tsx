@@ -5,28 +5,38 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { clients } from '@/data/client';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function FeaturedWork() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement[]>([]);
+  const rowsRef = useRef<HTMLDivElement[]>([]);
 
-  // Select the top two featured clients (e.g. Vasu & Simar, Karan & Bani)
-  const featuredClients = clients.slice(0, 2);
+  const featuredClients = clients.slice(0, 3);
 
   useGSAP(
     () => {
-      gsap.fromTo(
-        cardsRef.current,
-        { y: 50, autoAlpha: 0 },
-        {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.8,
-          stagger: 0.2,
-          ease: 'power3.out',
-        }
-      );
+      rowsRef.current.forEach((row) => {
+        if (!row) return;
+
+        gsap.fromTo(
+          row,
+          { y: 40, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: row,
+              start: 'top 85%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        );
+      });
     },
     { scope: containerRef }
   );
@@ -34,7 +44,7 @@ export default function FeaturedWork() {
   return (
     <section ref={containerRef} className="w-full px-6 py-16 md:px-12 md:py-28 max-w-7xl mx-auto">
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-20 pb-6 border-b border-brand-accent/40 gap-4">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 pb-6 border-b border-brand-accent/40 gap-4">
         <div>
           <span className="font-sans text-xs uppercase tracking-[0.3em] text-brand-text/60 block mb-2">
             Selected Portfolio
@@ -44,64 +54,85 @@ export default function FeaturedWork() {
           </h2>
         </div>
         <Link
-          href="/photography"
+          href="/portfolio"
           className="font-sans text-xs uppercase tracking-[0.2em] text-brand-text hover:italic border-b border-brand-text w-fit py-1 transition-all"
         >
           View All Archives ({clients.length})
         </Link>
       </div>
 
-      {/* Asymmetric 2-Column Work Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start">
+      {/* Dynamic Single-Column Horizontal Rows */}
+      <div className="flex flex-col divide-y divide-brand-accent/30">
         {featuredClients.map((client, idx) => {
-          // Asymmetric editorial balance: 7-column primary hero, 5-column companion
-          const colSpan = idx === 0 ? 'md:col-span-7' : 'md:col-span-5';
-          const aspect = idx === 0 ? 'aspect-[4/5]' : 'aspect-[3/4]';
           const year = client.date ? new Date(client.date).getFullYear() : '2026';
+          const isReversed = idx % 2 !== 0;
 
           return (
             <div
               key={client.slug}
               ref={(el) => {
-                if (el) cardsRef.current[idx] = el;
+                if (el) rowsRef.current[idx] = el;
               }}
-              className={`${colSpan} group cursor-pointer`}
+              className="group py-12 md:py-20 first:pt-0 last:pb-0"
             >
-              <Link href={`/portfolio/${client.slug}`} className="block">
-                {/* Image Frame */}
+              <Link
+                href={`/portfolio/${client.slug}`}
+                className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center"
+              >
+                {/* 1. Dynamic Natural-Aspect Image Frame */}
                 <div
-                  className={`relative w-full ${aspect} overflow-hidden bg-brand-accent/20 mb-4 border border-brand-accent/40`}
+  className={`w-full lg:col-span-7 flex ${
+    isReversed ? 'lg:order-2 justify-end' : 'lg:order-1 justify-start'
+  }`}
+>
+  {/* The container fits strictly to the image's dynamic bounds */}
+  <div className="relative w-fit max-w-full overflow-hidden bg-brand-accent/10 border border-brand-accent/30">
+    <Image
+      src={client.featuredCover}
+      alt={client.coupleNames}
+      width={0}
+      height={0}
+      sizes="(max-width: 1024px) 100vw, 60vw"
+      priority={idx === 0}
+      className="w-auto h-auto max-w-full max-h-[75vh] object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+    />
+
+    {/* Frame tag snaps to the real corner */}
+    <div className="absolute top-3 left-3 z-10 bg-brand-bg/90 backdrop-blur-sm px-2.5 py-1 font-sans text-[10px] uppercase tracking-widest text-brand-text border border-brand-accent/30">
+      0{idx + 1}
+    </div>
+  </div>
+</div>
+
+                {/* 2. Editorial Metadata & Context */}
+                <div
+                  className={`lg:col-span-5 flex flex-col justify-between self-center py-2 ${
+                    isReversed ? 'lg:order-1' : 'lg:order-2'
+                  }`}
                 >
-                  <Image
-                    src={client.featuredCover}
-                    alt={client.coupleNames}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover object-center grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
-                    priority={idx === 0}
-                  />
-                  <div className="absolute top-4 left-4 z-10 bg-brand-bg/85 backdrop-blur-sm px-3 py-1 font-sans text-[10px] uppercase tracking-widest text-brand-text border border-brand-accent/30">
-                    0{idx + 1}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between font-sans text-xs uppercase tracking-[0.25em] text-brand-text/60">
+                      <span>{client.location}</span>
+                      <span>{year}</span>
+                    </div>
+
+                    <h3 className="font-serif text-3xl md:text-4xl lg:text-5xl uppercase tracking-tight text-brand-text group-hover:italic transition-all leading-[1.05]">
+                      {client.coupleNames}
+                    </h3>
+
+                    <p className="font-sans text-xs text-brand-text/50 uppercase tracking-widest leading-relaxed">
+                      {client.events?.map((e) => e.name).join(' • ') || client.venue}
+                    </p>
                   </div>
-                </div>
 
-                {/* Metadata */}
-                <div className="flex items-baseline justify-between pt-2">
-                  <h3 className="font-serif text-xl md:text-2xl uppercase tracking-wide text-brand-text group-hover:italic transition-all">
-                    {client.coupleNames}
-                  </h3>
-                  <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-brand-text/60">
-                    {client.location}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between mt-1">
-                  <p className="font-sans text-xs text-brand-text/50 uppercase tracking-widest">
-                    {client.events.map((e) => e.name).join(' • ')}
-                  </p>
-                  <span className="font-sans text-[10px] text-brand-text/40 tracking-wider">
-                    {year}
-                  </span>
+                  <div className="pt-8 lg:pt-14">
+                    <span className="inline-flex items-center gap-3 font-sans text-xs uppercase tracking-[0.25em] text-brand-text border-b border-brand-text/80 pb-1 group-hover:border-brand-accent transition-colors">
+                      View Story Framing
+                      <span className="transition-transform duration-300 group-hover:translate-x-1.5">
+                        →
+                      </span>
+                    </span>
+                  </div>
                 </div>
               </Link>
             </div>

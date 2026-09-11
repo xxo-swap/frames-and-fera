@@ -78,16 +78,16 @@ export default function FilmsPage() {
       }
 
       // 2. Wedding Film (Highlight / 4-8 min)
-      if (client.films?.highlightUrl) {
-        const parsed = parseYouTubeUrl(client.films.highlightUrl);
+      if (client.films?.weddingFilmUrl) {
+        const parsed = parseYouTubeUrl(client.films.weddingFilmUrl);
         list.push({
-          id: `${client.slug}-highlight`,
+          id: `${client.slug}-wedding`,
           clientSlug: client.slug,
           coupleNames: client.coupleNames,
           venue: client.venue,
           location: client.location,
           category: 'Wedding Film',
-          videoUrl: client.films.highlightUrl,
+          videoUrl: client.films.weddingFilmUrl,
           embedUrl: parsed.embedUrl,
           thumbnail: client.hasPhotoGallery ? client.featuredCover : parsed.thumbnail,
           year,
@@ -160,14 +160,14 @@ export default function FilmsPage() {
   );
 
   return (
-    <div ref={containerRef} className="w-full min-h-screen bg-brand-bg text-brand-text px-6 py-12 md:px-12 md:py-20 max-w-7xl mx-auto">
+    <div ref={containerRef} className="my-16 w-full min-h-screen bg-brand-bg text-brand-text px-6 py-12 md:px-12 md:py-20 max-w-7xl mx-auto">
       {/* Editorial Header */}
       <header className="mb-12 md:mb-16 border-b border-brand-accent/40 pb-8 space-y-4">
         <span className="font-sans text-xs uppercase tracking-[0.3em] text-brand-text/60">
           Cinematography Archive
         </span>
         <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-normal uppercase tracking-tight">
-          Motion <span className="italic font-light">&amp; Films</span>
+          Wedding Films <span className="italic font-light">&amp;  More</span>
         </h1>
       </header>
 
@@ -211,7 +211,7 @@ export default function FilmsPage() {
                   alt={`${film.coupleNames} - ${film.category}`}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
+                  className="object-cover   group-hover:scale-105 transition-all duration-700 ease-out"
                 />
               ) : (
                 <div className="w-full h-full bg-brand-text/10 flex items-center justify-center text-xs uppercase tracking-widest text-brand-text/40">

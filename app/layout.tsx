@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Cormorant_Garamond, Montserrat } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 // Primary Editorial Font (Naman Verma style serif)
 const cormorant = Cormorant_Garamond({
@@ -35,6 +36,7 @@ export default function RootLayout({
       <body className="antialiased bg-[#f3d0bc] text-[#211102] selection:bg-[#211102] selection:text-[#f3d0bc]">
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
