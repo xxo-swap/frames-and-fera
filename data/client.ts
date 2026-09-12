@@ -8,11 +8,34 @@ export interface EventGallery {
 
 export interface FilmDeliverables {
   reelUrl?: string;
+  reelThumbnail?: string;
+  reelPriority?: number;
+  reelAllPriority?: number;
+
   teaserUrl?: string;
+  teaserThumbnail?: string;
+  teaserPriority?: number;
+  teaserAllPriority?: number;
+
   highlightUrl?: string;
+  highlightThumbnail?: string;
+  highlightPriority?: number;
+  highlightAllPriority?: number;
+
   preWeddingFilmUrl?: string;
+  preWeddingFilmThumbnail?: string;
+  preWeddingPriority?: number;
+  preWeddingAllPriority?: number;
+
   fullWeddingFilmUrl?: string;
+  fullWeddingFilmThumbnail?: string;
+  fullWeddingFilmPriority?: number;
+  fullWeddingFilmAllPriority?: number;
+
   weddingFilmUrl?: string;
+  weddingFilmThumbnail?: string;
+  weddingFilmPriority?: number;
+  weddingFilmAllPriority?: number;
 }
 
 export type ClientService =
@@ -61,7 +84,6 @@ export const clients: ClientPortfolio[] = [
     venue: 'Zana Luxury Resort',
     location: 'Jim Corbett, Uttarakhand',
     featuredCover: '/clients/vasu-simar/wed/068.webp',
-    
     hasPhotoGallery: true,
     services: ['Photography'],
     eventTags: ['Haldi', 'Mehndi', 'Sangeet', 'Cocktail', 'Wedding'],
@@ -148,7 +170,14 @@ export const clients: ClientPortfolio[] = [
     eventTags: ['Engagement', 'Haldi', 'Mehndi', 'Wedding', 'Wedding Full Film', 'Wedding Teaser'],
     films: {
       teaserUrl: 'https://www.youtube.com/watch?v=PSq0BAAcmXY',
+      teaserThumbnail: 'https://img.youtube.com/vi/PSq0BAAcmXY/maxresdefault.jpg',
+      teaserPriority: 2,      // #1 when on "Wedding Teaser" filter
+      teaserAllPriority: 10,   // #1 when on "All" filter
+
       fullWeddingFilmUrl: 'https://www.youtube.com/watch?v=9MFkLC8Zfj0',
+      fullWeddingFilmThumbnail: 'https://img.youtube.com/vi/9MFkLC8Zfj0/maxresdefault.jpg',
+      fullWeddingFilmPriority: 1, // #1 when on "Wedding Full Film" filter
+      fullWeddingFilmAllPriority: 3, // #4 when on "All" filter
     },
     testimonial: {
       quote: 'Our wedding teaser and full film felt like pure cinema, not a standard montage.',
@@ -259,6 +288,9 @@ export const clients: ClientPortfolio[] = [
     eventTags: ['Pre-Wedding Film'],
     films: {
       preWeddingFilmUrl: 'https://www.youtube.com/watch?v=vCvLHwNlJsA',
+      preWeddingFilmThumbnail: 'https://img.youtube.com/vi/vCvLHwNlJsA/maxresdefault.jpg',
+      preWeddingPriority: 1,      // #1 when on "Pre Wedding" filter
+      preWeddingAllPriority: 4,   // #2 when on "All" filter
     },
     events: [],
   },
@@ -278,7 +310,14 @@ export const clients: ClientPortfolio[] = [
     eventTags: ['Engagement', 'Haldi', 'Sangeet', 'Wedding Film'],
     films: {
       teaserUrl: 'https://www.youtube.com/watch?v=wq2yRFZ8txc',
+      teaserThumbnail: 'https://img.youtube.com/vi/wq2yRFZ8txc/maxresdefault.jpg',
+      teaserPriority: 2,      // #2 when on "Wedding Teaser" filter
+      teaserAllPriority: 5,   // #5 when on "All" filter
+
       weddingFilmUrl: 'https://www.youtube.com/watch?v=tTJQqUYD_R8',
+      weddingFilmThumbnail: 'https://img.youtube.com/vi/tTJQqUYD_R8/maxresdefault.jpg',
+      weddingFilmPriority: 2,      // #2 when on "Wedding Film" filter
+      weddingFilmAllPriority: 6,   // #6 when on "All" filter
     },
     events: [],
   },
@@ -298,6 +337,9 @@ export const clients: ClientPortfolio[] = [
     eventTags: ['Wedding Teaser'],
     films: {
       teaserUrl: 'https://www.youtube.com/watch?v=POq8-q09aFc',
+      teaserThumbnail: 'https://img.youtube.com/vi/POq8-q09aFc/maxresdefault.jpg',
+      teaserPriority: 1,      // #3 when on "Wedding Teaser" filter
+      teaserAllPriority: 1,   // #7 when on "All" filter
     },
     events: [],
   },
@@ -317,6 +359,9 @@ export const clients: ClientPortfolio[] = [
     eventTags: ['Pre-Wedding Film', 'Engagement'],
     films: {
       preWeddingFilmUrl: 'https://www.youtube.com/watch?v=ZB9PBwdiwUM',
+      preWeddingFilmThumbnail: 'https://img.youtube.com/vi/ZB9PBwdiwUM/maxresdefault.jpg',
+      preWeddingPriority: 2,      // #2 when on "Pre Wedding" filter
+      preWeddingAllPriority: 8,   // #8 when on "All" filter
     },
     testimonial: {
       quote: 'Not your cliché pre-wedding film. Authentic, purpose-driven, and truly our story.',
@@ -341,6 +386,9 @@ export const clients: ClientPortfolio[] = [
     eventTags: ['Wedding Teaser'],
     films: {
       teaserUrl: 'https://www.youtube.com/watch?v=kHxfIILV9Rw',
+      teaserThumbnail: 'https://img.youtube.com/vi/kHxfIILV9Rw/maxresdefault.jpg',
+      teaserPriority: 4,      // #4 when on "Wedding Teaser" filter
+      teaserAllPriority: 9,   // #9 when on "All" filter
     },
     events: [],
   },
@@ -360,6 +408,9 @@ export const clients: ClientPortfolio[] = [
     eventTags: ['Engagement', 'Haldi', 'Wedding Film'],
     films: {
       weddingFilmUrl: 'https://www.youtube.com/watch?v=KQ3V3IqcAls',
+      weddingFilmThumbnail: 'https://img.youtube.com/vi/KQ3V3IqcAls/maxresdefault.jpg',
+      weddingFilmPriority: 1,      // #1 when on "Wedding Film" filter
+      weddingFilmAllPriority: 2,   // #2 when on "All" filter
     },
     testimonial: {
       quote: 'They captured the sanctity and grandeur of Triyuginarayan with sublime reverence.',

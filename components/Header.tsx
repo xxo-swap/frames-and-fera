@@ -10,8 +10,8 @@ import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { href: "/about", label: "About" },
-  { href: "/photography", label: "Photo Portfolio" },
-  { href: "/films", label: "Films Portfolio" },
+  { href: "/photography", label: "Portfolio" },
+  { href: "/films", label: "Films" },
   { href: "/inquiry", label: "Inquire" },
 ];
 
@@ -34,6 +34,18 @@ export default function Header() {
       closeMenu();
     }
   }, [pathname]);
+
+  // Lock body scroll when mobile menu is active
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   // Scroll visibility logic
   useEffect(() => {
@@ -63,7 +75,7 @@ export default function Header() {
           {
             y: "0%",
             autoAlpha: 1,
-            duration: 0.65,
+            duration: 0.5,
             ease: "power4.out",
           },
           0
@@ -71,33 +83,33 @@ export default function Header() {
         .fromTo(
           links,
           {
-            y: 50,
+            y: 35,
             autoAlpha: 0,
-            rotateX: -15,
+            rotateX: -10,
           },
           {
             y: 0,
             autoAlpha: 1,
             rotateX: 0,
-            duration: 0.65,
-            stagger: 0.09,
+            duration: 0.5,
+            stagger: 0.08,
             ease: "power3.out",
           },
-          "-=0.25"
+          "-=0.2"
         )
         .fromTo(
           footerRef.current,
           {
-            y: 20,
+            y: 15,
             autoAlpha: 0,
           },
           {
             y: 0,
             autoAlpha: 1,
-            duration: 0.5,
+            duration: 0.4,
             ease: "power2.out",
           },
-          "-=0.25"
+          "-=0.2"
         );
     },
     {
@@ -139,7 +151,6 @@ export default function Header() {
       ========================== */}
       <header className="relative top-0 z-[100] w-full px-6 py-4 md:px-12">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          {/* Logo: Inverted to white over dark hero, normal dark on editorial interior pages */}
           <Link
             href="/"
             className="group relative z-[110] flex items-center"
@@ -150,7 +161,7 @@ export default function Header() {
               width={150}
               height={60}
               priority
-              className={`h-auto w-[120px] object-contain md:w-[110px] transition-all duration-300 scale-200 ${
+              className={`h-auto w-[120px] object-contain md:w-[110px] transition-all duration-300 ${
                 isHomePage && !isOpen ? "brightness-0 invert" : ""
               }`}
             />
@@ -220,19 +231,19 @@ export default function Header() {
       ========================== */}
       <div
         ref={menuRef}
-        className="fixed inset-0 z-[90] flex -translate-y-full invisible flex-col justify-between bg-brand-bg p-8 pt-32 opacity-0 md:hidden"
+        className="fixed inset-0 top-0 left-0 h-dvh w-screen z-[90] flex -translate-y-full invisible flex-col justify-between p-8 pt-28 opacity-0 md:hidden bg-brand-bg/95 backdrop-blur-xl border-b border-brand-accent/30 shadow-2xl"
         style={{
           perspective: "1000px",
         }}
       >
         <nav className="my-auto">
-          <ul ref={linksRef} className="space-y-4 text-center">
+          <ul ref={linksRef} className="space-y-6 text-center">
             {navLinks.map((link) => (
               <li key={link.href} className="will-change-transform">
                 <Link
                   href={link.href}
                   onClick={closeMenu}
-                  className="group relative inline-block p-2 font-serif text-5xl uppercase tracking-wide text-brand-text"
+                  className="group relative inline-block p-2 font-serif text-2xl uppercase tracking-wider text-brand-text"
                 >
                   <span className="transition-all duration-300 group-hover:italic">
                     {link.label}
@@ -247,7 +258,7 @@ export default function Header() {
 
         <div
           ref={footerRef}
-          className="border-t border-brand-text/15 pb-2 pt-6 text-center"
+          className="border-t border-brand-text/15 pb-6 pt-6 text-center"
         >
           <p className="font-sans text-[10px] uppercase tracking-[0.25em] text-brand-text/60">
             Cinematic Weddings &amp; Fine Art
