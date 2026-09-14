@@ -13,62 +13,62 @@ interface FeedFrame {
 const feedFrames: FeedFrame[] = [
   {
     id: '1',
-    src: '/clients/vasu-simar/wed/068.webp',
+    src: '/clients/vasu-simar/eng/004.webp',
     alt: 'Simar & Vasu wedding',
     coupleNames: 'Simar & Vasu',
     href: '/portfolio/vasu-simar',
   },
   {
     id: '2',
-    src: '/clients/vasu-simar/hal/001.webp',
+    src: '/clients/vasu-simar/hal/009.webp',
     alt: 'Vasu & Simar haldi details',
     coupleNames: 'Simar & Vasu',
     href: '/portfolio/vasu-simar',
   },
   {
     id: '3',
-    src: '/clients/rishabh-aishwarya/wed/024.webp',
+    src: '/clients/rishabh-aishwarya/wed/011.webp',
     alt: 'Rishabh & Aishwarya mandap ceremony',
     coupleNames: 'Rishabh & Aishwarya',
     href: '/portfolio/rishabh-aishwarya',
   },
   {
     id: '4',
-    src: '/clients/karan-bani/wed/052.webp',
-    alt: 'Karan & Bani black and white portrait',
-    coupleNames: 'Karan & Bani',
-    href: '/portfolio/karan-bani',
+    src: '/clients/rishabh-aishwarya/hal/021.webp',
+    alt: 'Rishabh & Aishwarya haldi details',
+    coupleNames: 'Rishabh & Aishwarya',
+    href: '/portfolio/rishabh-aishwarya',
   },
   {
     id: '5',
-    src: '/clients/karan-bani/wed/001.webp',
-    alt: 'Karan & Bani ceremony walk',
-    coupleNames: 'Karan & Bani',
-    href: '/portfolio/karan-bani',
+    src: '/clients/nitin-parika/hal/010.webp',
+    alt: 'Nitin & Parika ceremony walk',
+    coupleNames: 'Nitin & Parika',
+    href: '/portfolio/nitin-parika',
   },
   {
     id: '6',
-    src: '/clients/manpreet-simran/wed/001.webp',
-    alt: 'Manpreet & Simran outdoor portraits',
-    coupleNames: 'Manpreet & Simran',
-    href: '/portfolio/manpreet-simran',
+    src: '/clients/nitin-parika/hal/037.webp',
+    alt: 'Nitin & Parika outdoor portraits',
+    coupleNames: 'Nitin & Parika',
+    href: '/portfolio/nitin-parika',
   },
 ];
 
 export default function InstagramFeedStrip() {
-  const instagramHandle = '@framesandfera';
-  const instagramUrl = 'https://instagram.com';
+  const instagramHandle = '@frames_and_fera';
+  const instagramUrl = 'https://www.instagram.com/frames_and_fera/';
 
   return (
     <section className="w-full bg-brand-bg text-brand-text py-12 px-6 sm:px-10 antialiased selection:bg-brand-accent/20">
       {/* Top Editorial Bar */}
       <div className="max-w-7xl mx-auto flex  flex-col sm:flex-row gap-6 items-center justify-between pb-8 text-[11px] sm:text-xs uppercase tracking-[0.25em] text-brand-text/60">
-        <span>Follow Me on Instagram</span>
+        <span>Follow us on Instagram</span>
         <a
           href={instagramUrl}
           target="_blank"
           rel="noreferrer"
-          className="hover:text-brand-text transition-colors duration-200"
+          className="hover:text-brand-text transition-colors duration-200 "
         >
           {instagramHandle}
         </a>

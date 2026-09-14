@@ -7,7 +7,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
-    { label: 'Instagram', href: 'https://instagram.com/' },
+    { label: 'Instagram', href: 'https://www.instagram.com/frames_and_fera/' },
     { label: 'YouTube', href: 'https://youtube.com/' },
     { label: 'WhatsApp', href: 'https://wa.me/919876543210' },
   ];
@@ -15,7 +15,7 @@ export default function Footer() {
   return (
     <footer className="w-full bg-brand-bg text-brand-text border-t border-brand-accent/40 font-sans antialiased">
       {/* Editorial Navigation & Coordinates */}
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 py-16">
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 ">
         {/* Social Coordinates */}
         <div className="md:col-span-3 space-y-4">
           <ul className="flex sm:flex-row flex-col items-center justify-center gap-6 sm:gap-20">
