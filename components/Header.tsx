@@ -161,8 +161,8 @@ export default function Header() {
               width={150}
               height={60}
               priority
-              className={`h-auto w-[120px] object-contain md:w-[110px] transition-all duration-300 ${
-                isHomePage && !isOpen ? "brightness-0 invert" : ""
+              className={`h-[60px] w-[60px] scale-150 sm:scale-150 object-contain md:w-[110px] transition-all duration-300 ${
+                isHomePage && !isOpen ? " " : ""
               }`}
             />
           </Link>
@@ -200,7 +200,7 @@ export default function Header() {
             type="button"
             onClick={toggleMenu}
             className={`relative z-[110] p-3 transition-colors duration-300 md:hidden cursor-pointer ${
-              isHomePage && !isOpen ? "text-white" : "text-brand-text"
+              isHomePage && !isOpen ? "text-brand-accent" : "text-brand-text"
             }`}
             aria-label={isOpen ? "Close menu" : "Open menu"}
             aria-expanded={isOpen}

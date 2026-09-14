@@ -152,12 +152,12 @@ export default function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative w-full h-[100dvh] flex flex-col justify-between md:justify-end p-5 sm:p-8 md:p-14 lg:p-16 pt-24 sm:pt-28 md:pt-36 overflow-hidden bg-[#211102] text-brand-text"
+      className="relative w-full h-[70dvh] flex flex-col justify-between md:justify-end p-5 sm:p-8 md:p-14 lg:p-16 pt-24  md:pt-36 overflow-hidden bg-[#211102] text-brand-text"
     >
       {/* 1. Carousel Viewport */}
       <div
         ref={carouselWrapperRef}
-        className="absolute inset-0 z-0 w-full h-full overflow-hidden select-none"
+        className="absolute inset-0 z-0 w-full h-auto overflow-hidden select-none"
       >
         {/* Outgoing Slide */}
         {previousItem && (
@@ -226,7 +226,7 @@ export default function Hero() {
       </div>
 
       {/* 2. Top Headline */}
-      <div className="relative z-30 w-full max-w-4xl mt-2 sm:mt-0">
+      <div className="invisible relative z-30 w-full max-w-4xl mt-2 sm:mt-0">
         <h1
           ref={headlineRef}
           className="font-serif text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-normal leading-[1.05] md:leading-[0.95] text-brand-bg tracking-tight"

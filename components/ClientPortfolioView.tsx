@@ -224,9 +224,7 @@ export default function ClientPortfolioView({ client }: Props) {
                   <h2 className="font-serif text-3xl md:text-4xl font-light">
                     {event.name}
                   </h2>
-                  <span className="text-xs uppercase tracking-widest text-brand-text/60">
-                    {event.images.length} Frames
-                  </span>
+                  
                 </div>
 
                 <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
