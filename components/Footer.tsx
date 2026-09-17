@@ -50,7 +50,7 @@ export default function Footer() {
       {/* Legal & Copyright */}
       <div className="border-t border-brand-accent/20">
         <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] uppercase tracking-[0.2em] text-brand-text/50">
-          <p>© {currentYear} Frames &amp; Fera. All rights reserved.</p>
+          <p>© {currentYear} Frames and Fera. All rights reserved.</p>
           <p className="font-serif italic capitalize tracking-normal text-xs text-brand-text/70">
             Real Moments. Real Emotions.
           </p>

@@ -129,7 +129,7 @@ export default function EditorialQuoteSection() {
             className="font-serif italic text-3xl sm:text-4xl text-brand-accent/80 pt-3 select-none will-change-transform"
             style={{ fontFamily: 'var(--font-serif), Georgia, serif' }}
           >
-            Frames &amp; Fera
+            Frames and Fera
           </p>
         </div>
       </div>
