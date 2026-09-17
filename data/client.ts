@@ -374,51 +374,51 @@ export const clients: ClientPortfolio[] = [
   // ==========================================
   // 10. NITANT & ADITI
   // ==========================================
-  {
-    slug: 'nitant-aditi',
-    coupleNames: 'Nitant & Aditi',
-    date: '2026-01-26',
-    venue: 'Crowne Plaza',
-    location: 'Greater Noida, Uttar Pradesh',
-    featuredCover: 'https://img.youtube.com/vi/kHxfIILV9Rw/maxresdefault.jpg',
-    hasPhotoGallery: false,
-    services: ['Wedding Film'],
-    eventTags: ['Wedding Teaser'],
-    films: {
-      teaserUrl: 'https://www.youtube.com/watch?v=kHxfIILV9Rw',
-      teaserThumbnail: 'https://img.youtube.com/vi/kHxfIILV9Rw/maxresdefault.jpg',
-      teaserPriority: 4,      // #4 when on "Wedding Teaser" filter
-      teaserAllPriority: 9,   // #9 when on "All" filter
-    },
-    events: [],
-  },
+  // {
+  //   slug: 'nitant-aditi',
+  //   coupleNames: 'Nitant & Aditi',
+  //   date: '2026-01-26',
+  //   venue: 'Crowne Plaza',
+  //   location: 'Greater Noida, Uttar Pradesh',
+  //   featuredCover: 'https://img.youtube.com/vi/kHxfIILV9Rw/maxresdefault.jpg',
+  //   hasPhotoGallery: false,
+  //   services: ['Wedding Film'],
+  //   eventTags: ['Wedding Teaser'],
+  //   films: {
+  //     teaserUrl: 'https://www.youtube.com/watch?v=kHxfIILV9Rw',
+  //     teaserThumbnail: 'https://img.youtube.com/vi/kHxfIILV9Rw/maxresdefault.jpg',
+  //     teaserPriority: 4,      // #4 when on "Wedding Teaser" filter
+  //     teaserAllPriority: 9,   // #9 when on "All" filter
+  //   },
+  //   events: [],
+  // },
 
   // ==========================================
   // 11. YASH & NISHITA
   // ==========================================
-  {
-    slug: 'yash-nishita',
-    coupleNames: 'Yash & Nishita',
-    date: '2026-02-18',
-    venue: 'Triyuginarayan Temple',
-    location: 'Rudraprayag, Uttarakhand',
-    featuredCover: 'https://img.youtube.com/vi/KQ3V3IqcAls/maxresdefault.jpg',
-    hasPhotoGallery: false,
-    services: ['Wedding Film'],
-    eventTags: ['Engagement', 'Haldi', 'Wedding Film'],
-    films: {
-      weddingFilmUrl: 'https://www.youtube.com/watch?v=KQ3V3IqcAls',
-      weddingFilmThumbnail: 'https://img.youtube.com/vi/KQ3V3IqcAls/maxresdefault.jpg',
-      weddingFilmPriority: 1,      // #1 when on "Wedding Film" filter
-      weddingFilmAllPriority: 2,   // #2 when on "All" filter
-    },
-    testimonial: {
-      quote: 'They captured the sanctity and grandeur of Triyuginarayan with sublime reverence.',
-      narrative:
-        'Filming an ancient temple wedding at altitude has its own challenges, but the team navigated the sacred rituals with complete respect and produced a film that moves us to tears every single watch.',
-    },
-    events: [],
-  },
+  // {
+  //   slug: 'yash-nishita',
+  //   coupleNames: 'Yash & Nishita',
+  //   date: '2026-02-18',
+  //   venue: 'Triyuginarayan Temple',
+  //   location: 'Rudraprayag, Uttarakhand',
+  //   featuredCover: 'https://img.youtube.com/vi/KQ3V3IqcAls/maxresdefault.jpg',
+  //   hasPhotoGallery: false,
+  //   services: ['Wedding Film'],
+  //   eventTags: ['Engagement', 'Haldi', 'Wedding Film'],
+  //   films: {
+  //     weddingFilmUrl: 'https://www.youtube.com/watch?v=KQ3V3IqcAls',
+  //     weddingFilmThumbnail: 'https://img.youtube.com/vi/KQ3V3IqcAls/maxresdefault.jpg',
+  //     weddingFilmPriority: 1,      // #1 when on "Wedding Film" filter
+  //     weddingFilmAllPriority: 2,   // #2 when on "All" filter
+  //   },
+  //   testimonial: {
+  //     quote: 'They captured the sanctity and grandeur of Triyuginarayan with sublime reverence.',
+  //     narrative:
+  //       'Filming an ancient temple wedding at altitude has its own challenges, but the team navigated the sacred rituals with complete respect and produced a film that moves us to tears every single watch.',
+  //   },
+  //   events: [],
+  // },
 ];
 
 // Lookup Helpers
