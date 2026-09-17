@@ -10,7 +10,7 @@ import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { href: "/about", label: "About" },
-  { href: "/photography", label: "Portfolio" },
+  { href: "/portfolio", label: "Portfolio" },
   { href: "/films", label: "Films" },
   { href: "/inquiry", label: "Inquire" },
 ];
@@ -161,7 +161,7 @@ export default function Header() {
               width={150}
               height={60}
               priority
-              className={`h-[60px] w-[60px] scale-150 sm:scale-150 object-contain md:w-[110px] transition-all duration-300 ${
+              className={`h-[60px] w-[60px] scale-50 sm:scale-110 object-contain md:w-[100px] transition-all duration-300 ${
                 isHomePage && !isOpen ? " " : ""
               }`}
             />
@@ -205,18 +205,18 @@ export default function Header() {
             aria-label={isOpen ? "Close menu" : "Open menu"}
             aria-expanded={isOpen}
           >
-            <span className="relative block h-[26px] w-[26px]">
+            <span className="relative block h-[20px] w-[20px]">
               <Menu
-                size={26}
-                strokeWidth={1.5}
+                size={20}
+                strokeWidth={1}
                 className={`absolute inset-0 transition-all duration-300 ${
                   isOpen ? "rotate-90 opacity-0" : "rotate-0 opacity-100"
                 }`}
               />
 
               <X
-                size={26}
-                strokeWidth={1.5}
+                size={20}
+                strokeWidth={1}
                 className={`absolute inset-0 transition-all duration-300 ${
                   isOpen ? "rotate-0 opacity-100" : "-rotate-90 opacity-0"
                 }`}

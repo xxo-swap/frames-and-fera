@@ -93,19 +93,19 @@ export default function EditorialQuoteSection() {
         {/* Accent Divider Line */}
         <div
           ref={lineRef}
-          className="w-16 h-[1px] bg-brand-accent/50 mb-10 sm:mb-14"
+          className="w-16 h-[1px] bg-brand-accent/50 mb-3 sm:mb-14"
         />
 
         {/* Main Quote */}
         <h2
           ref={quoteRef}
-          className="font-serif font-light text-2xl sm:text-3xl md:text-5xl leading-[1.35] sm:leading-[1.3] text-brand-text tracking-tight italic"
+          className="font-quote font-light text-2xl sm:text-3xl md:text-5xl leading-[1.35] sm:leading-[1.3] text-brand-text tracking-tight "
           style={{ perspective: '800px' }}
         >
           {quoteText.split(' ').map((word, i) => (
             <span
               key={`${word}-${i}`}
-              className="reveal-word inline-block mr-[0.28em] will-change-transform"
+              className="reveal-word inline-block mr-[0.28em] will-change-transform font-quote"
             >
               {word}
             </span>
@@ -113,7 +113,7 @@ export default function EditorialQuoteSection() {
         </h2>
 
         {/* Real Quote Attribution & Signature */}
-        <div className="mt-12 sm:mt-16 flex flex-col items-center gap-3">
+        <div className="mt-8 sm:mt-16 flex flex-col items-center gap-3">
           <div ref={authorRef} className="space-y-1">
             <p className="font-sans text-[11px] sm:text-xs uppercase tracking-[0.25em] text-brand-text/80 font-medium">
               Cesare Pavese

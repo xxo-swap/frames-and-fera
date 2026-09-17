@@ -55,18 +55,15 @@ export default function FeaturedWork() {
         </div>
         <Link
           href="/portfolio"
-          className="font-sans text-xs uppercase tracking-[0.2em] text-brand-text hover:italic border-b border-brand-text w-fit py-1 transition-all"
+          className="font-sans text-xs uppercase tracking-[0.2em] text-brand-text border-b border-brand-text w-fit py-1 transition-all"
         >
           View All Stories ({clients.length})
         </Link>
       </div>
 
-      {/* Dynamic Single-Column Horizontal Rows */}
+      {/* Rows Container */}
       <div className="flex flex-col divide-y divide-brand-accent/30">
         {featuredClients.map((client, idx) => {
-          const year = client.date
-            ? new Date(client.date).getFullYear()
-            : "2026";
           const isReversed = idx % 2 !== 0;
 
           return (
@@ -79,29 +76,36 @@ export default function FeaturedWork() {
             >
               <Link
                 href={`/portfolio/${client.slug}`}
-                className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center"
+                className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 lg:gap-16 items-center"
               >
                 {/* 1. Dynamic Natural-Aspect Image Frame */}
+                {/* Mobile: stacked full width. Desktop/Mid: 7-column span, alternates left/right */}
                 <div
-                  className={`w-full lg:col-span-7 flex ${
+                  className={`w-full md:col-span-7 flex flex-col gap-2 ${
                     isReversed
-                      ? "lg:order-2 justify-end"
-                      : "lg:order-1 justify-start"
+                      ? "md:order-2 md:items-end"
+                      : "md:order-1 md:items-start"
                   }`}
                 >
-                  {/* The container fits strictly to the image's dynamic bounds */}
+                  {/* Mobile "View Story" anchor retained */}
+                  <div className="ml-1 md:hidden">
+                    <span className="inline-flex border-b items-center gap-3 font-sans text-[8px] sm:text-[12px] uppercase tracking-[0.25em] text-brand-text group-hover:border-brand-accent transition-colors">
+                      View Story
+                    </span>
+                  </div>
+
                   <div className="relative w-fit max-w-full overflow-hidden bg-brand-accent/10 border border-brand-accent/30">
                     <Image
                       src={client.featuredCover}
                       alt={client.coupleNames}
                       width={0}
                       height={0}
-                      sizes="(max-width: 1024px) 100vw, 60vw"
+                      sizes="(max-width: 768px) 100vw, 60vw"
                       priority={idx === 0}
                       className="w-auto h-auto max-w-full max-h-[75vh] object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                     />
 
-                    {/* Frame tag snaps to the real corner */}
+                    {/* Frame index badge */}
                     <div className="absolute top-3 left-3 z-10 bg-brand-bg/90 backdrop-blur-sm px-2.5 py-1 font-sans text-[10px] uppercase tracking-widest text-brand-text border border-brand-accent/30">
                       0{idx + 1}
                     </div>
@@ -109,33 +113,27 @@ export default function FeaturedWork() {
                 </div>
 
                 {/* 2. Editorial Metadata & Context */}
+                {/* Mobile: stacked underneath. Desktop/Mid: 5-column span, opposite side */}
                 <div
-                  className={`lg:col-span-5 flex flex-col justify-between self-center py-2 ${
-                    isReversed ? "lg:order-1" : "lg:order-2"
+                  className={`w-full md:col-span-5 flex flex-col justify-center gap-4 ${
+                    isReversed
+                      ? "md:order-1 md:text-left"
+                      : "md:order-2 md:text-left"
                   }`}
                 >
-                  <div className="space-y-3 md:space-y-4">
-                    <div className=" flex items-center justify-between font-sans text-[10px] sm:text-xs uppercase tracking-[0.25em] text-brand-text/60">
-                      <span>{client.location}</span>
-                      <span>{year}</span>
-                    </div>
-
-                    <h3 className="font-serif text-xl md:text-4xl lg:text-5xl uppercase tracking-tight text-brand-text group-hover:italic transition-all leading-[1.05]">
+                  <div className="space-y-1.5 md:space-y-2">
+                    <h3 className="font-serif text-sm md:text-2xl lg:text-xl uppercase tracking-tight text-brand-text transition-all leading-[1.05]">
                       {client.coupleNames}
                     </h3>
-
-                    <p className="font-sans text-[10px] sm:text-xstext-brand-text/50 uppercase tracking-widest leading-relaxed">
-                      {client.events?.map((e) => e.name).join(" • ") ||
-                        client.venue}
-                    </p>
+                    <div className="flex items-center justify-between font-sans text-[7px] sm:text-xs lg:text-xs uppercase tracking-[0.25em] text-brand-text/60">
+                      <span>{client.location}</span>
+                    </div>
                   </div>
 
-                  <div className="pt-4 lg:pt-14">
-                    <span className="inline-flex items-center gap-3 font-sans text-[10px] sm:text-xs uppercase tracking-[0.25em] text-brand-text border-b border-brand-text/80 pb-1 group-hover:border-brand-accent transition-colors">
-                      View Story
-                      <span className="transition-transform duration-300 group-hover:translate-x-1.5">
-                        →
-                      </span>
+                  {/* Desktop/Tablet Call to Action */}
+                  <div className="hidden md:block pt-1">
+                    <span className="inline-flex border-b border-brand-text/40 items-center gap-3 font-sans text-[10px] lg:text-[11px] uppercase tracking-[0.25em] text-brand-text group-hover:border-brand-accent transition-colors">
+                      View Story &rarr;
                     </span>
                   </div>
                 </div>

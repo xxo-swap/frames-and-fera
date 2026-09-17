@@ -193,31 +193,28 @@ export default function Hero() {
       {/* 2. Bottom HUD & Controls */}
       <div
         ref={bottomBarRef}
-        className="relative z-30 w-full flex flex-row items-end justify-between gap-4 sm:gap-6 border-t border-brand-accent/40 pt-4 sm:pt-6  md:backdrop-blur-none p-3 sm:p-4 md:p-0"
+        className="relative z-30 w-full flex flex-row items-center justify-between gap-4 sm:gap-6 border-t border-brand-accent/40 pt-4 sm:pt-6  md:backdrop-blur-none p-3 sm:p-4 md:p-2"
       >
         {currentItem && (
-          <div className="space-y-0.5 sm:space-y-1">
-            <span className="font-sans text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-brand-accent">
-              {currentItem.location}
-            </span>
+          <div className=" ">
+           
             <Link
               href={`/portfolio/${currentItem.slug}`}
-              className="group flex items-center gap-2 font-serif text-[18px] sm:text-2xl md:text-3xl text-brand-bg font-light hover:text-brand-accent transition-colors"
+              className="group flex items-center gap-2 font-serif text-[16px] sm:text-2xl md:text-3xl text-brand-bg font-light hover:text-brand-accent transition-colors"
             >
               <span>{currentItem.coupleNames}</span>
-              <ArrowUpRight className="w-4 h-4 text-brand-bg transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brand-accent" />
             </Link>
-            <p className="font-sans text-[9px] sm:text-xs text-brand-bg/60 tracking-wider">
+             <span className="font-sans text-[10px] sm:text-[12px] uppercase tracking-[0.25em] text-brand-accent">
+              {currentItem.location}
+            </span>
+            <p className="font-sans text-[8px] sm:text-xs text-brand-bg/60 tracking-wider">
               {currentItem.venue}
             </p>
           </div>
         )}
 
-        <div className="w-auto flex flex-col sm:flex-row items-end sm:items-center justify-end gap-3 sm:gap-6">
-          <span className="font-sans text-xs uppercase tracking-[0.25em] text-brand-bg/70 tabular-nums">
-            {String(currentIndex + 1).padStart(2, '0')} / {String(HERO_SLIDES.length).padStart(2, '0')}
-          </span>
-
+        <div className="w-auto flex flex-col sm:flex-row items-end sm:items-center justify-center gap-3 sm:gap-6">
+          
           <div className="flex items-center gap-2">
             <button
               type="button"

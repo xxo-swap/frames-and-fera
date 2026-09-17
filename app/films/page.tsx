@@ -162,7 +162,6 @@ export default function FilmsPage() {
   // Dual-mode Sorting Logic
   const filteredFilms = useMemo(() => {
     if (selectedCategory === 'All') {
-      // In "All" tab: Respect `allPriority` (1 -> 2 -> 3...)
       return [...allFilms].sort((a, b) => {
         if (a.allPriority !== b.allPriority) {
           return a.allPriority - b.allPriority;
@@ -171,7 +170,6 @@ export default function FilmsPage() {
       });
     }
 
-    // In a Category tab: Respect `categoryPriority` (1 -> 2 -> 3...)
     return allFilms
       .filter((item) => item.category === selectedCategory)
       .sort((a, b) => {
@@ -202,19 +200,21 @@ export default function FilmsPage() {
   );
 
   return (
-    <div ref={containerRef} className="my-32 w-full min-h-screen bg-brand-bg text-brand-text py-12 md:py-24">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-12 md:mb-20">
-        <header className="border-b border-brand-accent/30 pb-8 md:pb-12 space-y-4">
-          <span className="font-sans text-xs uppercase tracking-[0.3em] text-brand-text/60">
+    <div ref={containerRef} className="my-28 w-full min-h-screen bg-brand-bg text-brand-text py-10 md:py-20">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-10 md:mb-16">
+        <header className="border-b border-brand-accent/30 pb-6 md:pb-10 space-y-3">
+          {/* Reduced ~20%: text-xs (12px) -> text-[10px] */}
+          <span className="font-sans text-[10px] uppercase tracking-[0.3em] text-brand-text/60">
             Cinematography Archive
           </span>
-          <h1 className="font-serif text-4xl sm:text-6xl md:text-8xl font-normal uppercase tracking-tight">
-            Wedding Films <span className="italic font-light">&amp; More</span>
+          {/* Reduced ~20%: text-4xl/6xl/8xl (36/60/96px) -> text-[29px]/text-5xl/text-[64px], removed italic */}
+          <h1 className="font-serif text-[29px] sm:text-5xl md:text-[64px] font-normal uppercase tracking-tight">
+            Wedding Films <span className="font-light">&amp; More</span>
           </h1>
         </header>
 
         {/* Category Filter Bar */}
-        <nav className="flex flex-wrap items-center gap-3 md:gap-4 mt-8 md:mt-10">
+        <nav className="flex flex-wrap items-center gap-2.5 md:gap-3 mt-6 md:mt-8">
           {CATEGORIES.map((cat) => {
             const isActive = selectedCategory === cat;
             return (
@@ -225,7 +225,8 @@ export default function FilmsPage() {
                   setSelectedCategory(cat);
                   setPlayingFilmId(null);
                 }}
-                className={`font-sans text-xs uppercase tracking-[0.2em] px-5 py-2.5 border transition-all duration-300 cursor-pointer select-none ${
+                /* Reduced ~20%: text-xs (12px) -> text-[10px] */
+                className={`font-sans text-[10px] uppercase tracking-[0.2em] px-4 py-2 border transition-all duration-300 cursor-pointer select-none ${
                   isActive
                     ? 'bg-brand-text text-brand-bg border-brand-text shadow-lg'
                     : 'bg-transparent text-brand-text/70 border-brand-accent/40 hover:border-brand-text hover:text-brand-text'
@@ -241,7 +242,7 @@ export default function FilmsPage() {
       {/* Stacked Showcase Container */}
       <div
         ref={gridRef}
-        className="w-full flex flex-col gap-12 sm:gap-16 md:gap-24 px-4 sm:px-6 md:px-12 max-w-[1600px] mx-auto"
+        className="w-full flex flex-col gap-10 sm:gap-14 md:gap-20 px-4 sm:px-6 md:px-12 max-w-[1600px] mx-auto"
       >
         {filteredFilms.map((film) => {
           const isPlaying = playingFilmId === film.id;
@@ -267,10 +268,11 @@ export default function FilmsPage() {
                       className="w-full h-full border-0"
                     />
 
+                    {/* Reduced ~20%: text-[11px] -> text-[9px] */}
                     <button
                       type="button"
                       onClick={() => setPlayingFilmId(null)}
-                      className="absolute top-4 right-4 z-20 bg-black/80 hover:bg-black text-white text-[11px] uppercase tracking-[0.2em] px-4 py-2 border border-white/30 backdrop-blur-md transition-all cursor-pointer"
+                      className="absolute top-4 right-4 z-20 bg-black/80 hover:bg-black text-white text-[9px] uppercase tracking-[0.2em] px-3.5 py-1.5 border border-white/30 backdrop-blur-md transition-all cursor-pointer"
                     >
                       Close Film [✕]
                     </button>
@@ -290,21 +292,24 @@ export default function FilmsPage() {
                         className="object-cover group-hover:scale-105 transition-all duration-1000 ease-out"
                       />
                     ) : (
-                      <div className="w-full h-full bg-brand-text/10 flex items-center justify-center text-xs uppercase tracking-widest text-brand-text/40">
+                      /* Reduced ~20%: text-xs (12px) -> text-[10px] */
+                      <div className="w-full h-full bg-brand-text/10 flex items-center justify-center text-[10px] uppercase tracking-widest text-brand-text/40">
                         Cinema Frame
                       </div>
                     )}
 
                     <div className="absolute inset-0 bg-gradient-to-t from-[#211102]/85 via-[#211102]/25 to-transparent group-hover:via-[#211102]/10 transition-colors duration-500" />
 
-                    <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-10 bg-brand-bg/90 backdrop-blur-md px-3.5 py-1.5 font-sans text-[10px] sm:text-xs uppercase tracking-widest text-brand-text border border-brand-accent/40">
+                    {/* Category pill on card - Reduced ~20%: text-[10px]/text-xs -> text-[8px]/text-[10px] */}
+                    <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-10 bg-brand-bg/90 backdrop-blur-md px-3 py-1 font-sans text-[8px] sm:text-[10px] uppercase tracking-widest text-brand-text border border-brand-accent/40">
                       {film.category}
                     </div>
 
+                    {/* Play button icon */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full border border-brand-bg/70 bg-brand-text/40 backdrop-blur-md flex items-center justify-center group-hover:scale-110 group-hover:bg-brand-text transition-all duration-500 shadow-2xl">
+                      <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full border border-brand-bg/70 bg-brand-text/40 backdrop-blur-md flex items-center justify-center group-hover:scale-110 group-hover:bg-brand-text transition-all duration-500 shadow-2xl">
                         <svg
-                          className="w-6 h-6 sm:w-8 sm:h-8 text-brand-bg translate-x-0.5"
+                          className="w-5 h-5 sm:w-7 sm:h-7 text-brand-bg translate-x-0.5"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
@@ -313,17 +318,22 @@ export default function FilmsPage() {
                       </div>
                     </div>
 
-                    <div className="absolute bottom-4 left-4 sm:bottom-8 sm:left-8 z-10 hidden sm:block">
-                      <span className="font-sans text-[11px] sm:text-xs uppercase tracking-[0.25em] text-brand-bg/80 drop-shadow">
+                    {/* Bottom Left Desktop/Tablet overlay */}
+                    <div className="absolute bottom-4 left-4 sm:bottom-7 sm:left-7 z-10 hidden sm:block">
+                      {/* Reduced ~20%: text-[11px]/text-xs -> text-[9px]/text-[10px] */}
+                      <span className="font-sans text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-brand-bg/80 drop-shadow">
                         {film.venue ? `${film.venue} • ` : ''}{film.location}
                       </span>
-                      <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl uppercase tracking-wide text-brand-bg font-normal drop-shadow-md group-hover:translate-x-2 transition-transform duration-500">
+                      {/* Reduced ~20%: text-3xl/5xl/6xl (30/48/60px) -> text-2xl/text-[38px]/text-5xl */}
+                      <h2 className="font-serif text-2xl sm:text-[38px] lg:text-5xl uppercase tracking-wide text-brand-bg font-normal drop-shadow-md group-hover:translate-x-2 transition-transform duration-500">
                         {film.coupleNames}
                       </h2>
                     </div>
 
-                    <div className="absolute bottom-4 right-4 sm:bottom-8 sm:right-8 z-10 hidden sm:block">
-                      <span className="font-sans text-xs uppercase tracking-[0.3em] text-brand-bg/80 border border-brand-bg/30 px-3 py-1 backdrop-blur-sm">
+                    {/* Bottom Right Desktop/Tablet year pill */}
+                    <div className="absolute bottom-4 right-4 sm:bottom-7 sm:right-7 z-10 hidden sm:block">
+                      {/* Reduced ~20%: text-xs (12px) -> text-[10px] */}
+                      <span className="font-sans text-[10px] uppercase tracking-[0.3em] text-brand-bg/80 border border-brand-bg/30 px-2.5 py-0.5 backdrop-blur-sm">
                         {film.year}
                       </span>
                     </div>
@@ -331,16 +341,20 @@ export default function FilmsPage() {
                 )}
               </div>
 
+              {/* Mobile text block */}
               <div className="sm:hidden flex flex-col pt-3 px-1">
                 <div className="flex items-baseline justify-between">
-                  <h2 className="font-serif text-2xl uppercase tracking-wide text-brand-text">
+                  {/* Reduced ~20%: text-2xl (24px) -> text-[19px] */}
+                  <h2 className="font-serif text-[19px] uppercase tracking-wide text-brand-text">
                     {film.coupleNames}
                   </h2>
-                  <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-brand-text/60">
+                  {/* Reduced ~20%: text-[10px] -> text-[8px] */}
+                  <span className="font-sans text-[8px] uppercase tracking-[0.2em] text-brand-text/60">
                     {film.year}
                   </span>
                 </div>
-                <p className="font-sans text-xs text-brand-text/60 mt-1 uppercase tracking-wider">
+                {/* Reduced ~20%: text-xs (12px) -> text-[10px] */}
+                <p className="font-sans text-[10px] text-brand-text/60 mt-1 uppercase tracking-wider">
                   {film.venue ? `${film.venue}, ` : ''}{film.location}
                 </p>
               </div>
@@ -349,9 +363,11 @@ export default function FilmsPage() {
         })}
       </div>
 
+      {/* Empty Fallback */}
       {filteredFilms.length === 0 && (
-        <div className="py-24 text-center border-t border-brand-accent/30 max-w-7xl mx-auto px-6">
-          <p className="font-serif text-2xl italic text-brand-text/60">
+        <div className="py-20 text-center border-t border-brand-accent/30 max-w-7xl mx-auto px-6">
+          {/* Reduced ~20%: text-2xl (24px) -> text-[19px], removed italic */}
+          <p className="font-serif text-[19px] text-brand-text/60">
             No films found in this category.
           </p>
         </div>

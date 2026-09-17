@@ -62,13 +62,13 @@ export default function InstagramFeedStrip() {
   return (
     <section className="w-full bg-brand-bg text-brand-text py-12 px-6 sm:px-10 antialiased selection:bg-brand-accent/20">
       {/* Top Editorial Bar */}
-      <div className="max-w-7xl mx-auto flex  flex-col sm:flex-row gap-6 items-center justify-between pb-8 text-[11px] sm:text-xs uppercase tracking-[0.25em] text-brand-text/60">
+      <div className="max-w-7xl mx-auto flex  font-quote flex-col sm:flex-row gap-2 items-center justify-between pb-8 text-[16px] sm:text-xs uppercase tracking-[0.15em] text-brand-text/60">
         <span>Follow us on Instagram</span>
         <a
           href={instagramUrl}
           target="_blank"
           rel="noreferrer"
-          className="hover:text-brand-text transition-colors duration-200 "
+          className="hover:text-brand-text text-xs  font-serif transition-colors duration-200 "
         >
           {instagramHandle}
         </a>

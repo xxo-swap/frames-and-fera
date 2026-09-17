@@ -1,315 +1,224 @@
-// app/inquiry/page.tsx
 'use client';
 
-import { useState, useId } from 'react';
-
-interface InquiryFormState {
-  clientNames: string;
-  phone: string;
-  eventDate: string;
-  location: string;
-  service: string;
-  notes: string;
-}
-
-const INITIAL_STATE: InquiryFormState = {
-  clientNames: '',
-  phone: '',
-  eventDate: '',
-  location: '',
-  service: '',
-  notes: '',
-};
-
-const SERVICE_OPTIONS = [
-  'Photography',
-  'Wedding Film',
-  'Photography & Wedding Film',
-];
+import React, { useState } from 'react';
+import Image from 'next/image';
 
 export default function InquiryPage() {
-  const [formData, setFormData] = useState<InquiryFormState>(INITIAL_STATE);
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-  const [serviceError, setServiceError] = useState(false);
-  const formId = useId();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    date: '',
+    location: '',
+    message: '',
+  });
 
-  const handleServiceSelect = (option: string) => {
-    setServiceError(false);
-    setFormData((prev) => ({
-      ...prev,
-      service: prev.service === option ? '' : option,
-    }));
-  };
-
-  const handleInvalid = (
-    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-    message: string
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    e.currentTarget.setCustomValidity(message);
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleInput = (
-    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    e.currentTarget.setCustomValidity('');
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!formData.service) {
-      setServiceError(true);
-      return;
-    }
-
-    setStatus('submitting');
-
-    try {
-      const response = await fetch('/api/inquiry', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to send transmission');
-      }
-
-      setStatus('success');
-      setFormData(INITIAL_STATE);
-    } catch {
-      setStatus('error');
-    }
+    console.log('Inquiry submitted:', formData);
   };
 
   return (
-    <main className="min-h-screen bg-brand-bg text-brand-text px-6 py-12 sm:px-10 sm:py-16 md:px-16 md:py-20">
-      <div className="mx-auto max-w-7xl">
-        <div className="mt-16 grid grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-20">
-          <section className="lg:col-span-5 flex flex-col justify-between space-y-12">
-            <div className="space-y-6">
-              <span className="font-sans text-[10px] uppercase tracking-[0.3em] text-brand-text/70">
-                Bookings &amp; Commissions
-              </span>
-              <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl font-light leading-[0.95] tracking-tight">
-                Let’s create something <span className="italic">enduring</span>.
-              </h1>
-              <p className="font-sans text-sm leading-relaxed text-brand-text/80 max-w-md pt-2">
-                We take on a limited number of weddings and visual commissions each year to ensure uncompromising creative presence. Tell us your date, vision, and celebrations below.
-              </p>
-            </div>
-
-            <aside className="space-y-8 border-t border-brand-accent pt-8">
-              <div>
-                <h2 className="font-sans text-[10px] uppercase tracking-[0.25em] text-brand-text/60">
-                  Headquarters
-                </h2>
-                <p className="mt-1 font-sans text-sm leading-relaxed text-brand-text/90">
-                  Flat No-F6-G09, Centurion Park Terrace Home, Techzone-IV, Greater Noida West, Gautam Buddha Nagar, Uttar Pradesh 201306
-                </p>
-              </div>
-
-              <div>
-                <h2 className="font-sans text-[10px] uppercase tracking-[0.25em] text-brand-text/60">
-                  Direct Inquiries
-                </h2>
-                <a
-                  href="mailto:hello@framesandfera.in"
-                  className="mt-1 block font-serif text-lg underline underline-offset-4 decoration-brand-accent hover:opacity-70 transition-opacity"
-                >
-                  hello@framesandfera.in
-                </a>
-              </div>
-
-              <div>
-                <h2 className="font-sans text-[10px] uppercase tracking-[0.25em] text-brand-text/60">
-                  Current Availability
-                </h2>
-                <p className="mt-1 font-sans text-xs tracking-wider text-brand-text/80">
-                  Select dates remaining for 2026/2027.
-                </p>
-              </div>
-            </aside>
-          </section>
-
-          <section className="lg:col-span-7">
-            {status === 'success' ? (
-              <div className="border border-brand-accent p-12 text-center space-y-4">
-                <span className="font-sans text-xs uppercase tracking-[0.3em] text-brand-text/60">
-                  Received
-                </span>
-                <h3 className="font-serif text-3xl sm:text-4xl">Thank you for sharing your story.</h3>
-                <p className="font-sans text-sm text-brand-text/80 max-w-sm mx-auto">
-                  We review our calendar weekly and will be in touch with you directly on your phone/WhatsApp within two business days.
-                </p>
-                <div className="pt-4">
-                  <button
-                    type="button"
-                    onClick={() => setStatus('idle')}
-                    className="font-sans text-xs uppercase tracking-[0.2em] border-b border-brand-text pb-1 hover:opacity-70 transition-opacity cursor-pointer"
-                  >
-                    Submit Another Inquiry
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-10">
-                <div className="space-y-2">
-                  <label
-                    htmlFor={`${formId}-names`}
-                    className="block font-sans text-[11px] uppercase tracking-[0.25em]"
-                  >
-                    Client Name(s) *
-                  </label>
-                  <input
-                    id={`${formId}-names`}
-                    required
-                    type="text"
-                    value={formData.clientNames}
-                    onChange={(e) => setFormData({ ...formData, clientNames: e.target.value })}
-                    onInvalid={(e) => handleInvalid(e, 'Please tell us your name(s) to proceed.')}
-                    onInput={handleInput}
-                    placeholder="Simar & Vasu"
-                    className="w-full border-b border-brand-accent bg-transparent pb-3 pt-1 text-base text-brand-text placeholder-brand-text/30 focus:border-brand-text focus:outline-none transition-colors"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label
-                    htmlFor={`${formId}-phone`}
-                    className="block font-sans text-[11px] uppercase tracking-[0.25em]"
-                  >
-                    Phone / WhatsApp *
-                  </label>
-                  <input
-                    id={`${formId}-phone`}
-                    required
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    onInvalid={(e) => handleInvalid(e, 'Please share your contact number so we can reach you.')}
-                    onInput={handleInput}
-                    placeholder="+91 98765 43210"
-                    className="w-full border-b border-brand-accent bg-transparent pb-3 pt-1 text-base text-brand-text placeholder-brand-text/30 focus:border-brand-text focus:outline-none transition-colors"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                  <div className="space-y-2">
-                    <label
-                      htmlFor={`${formId}-date`}
-                      className="block font-sans text-[11px] uppercase tracking-[0.25em]"
-                    >
-                      Event Date or Target Season *
-                    </label>
-                    <input
-                      id={`${formId}-date`}
-                      required
-                      type="text"
-                      value={formData.eventDate}
-                      onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
-                      onInvalid={(e) => handleInvalid(e, 'Please share your wedding date or tentative season.')}
-                      onInput={handleInput}
-                      placeholder="e.g., November 2026"
-                      className="w-full border-b border-brand-accent bg-transparent pb-3 pt-1 text-base text-brand-text placeholder-brand-text/30 focus:border-brand-text focus:outline-none transition-colors"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label
-                      htmlFor={`${formId}-location`}
-                      className="block font-sans text-[11px] uppercase tracking-[0.25em]"
-                    >
-                      Location &amp; Venue *
-                    </label>
-                    <input
-                      id={`${formId}-location`}
-                      required
-                      type="text"
-                      value={formData.location}
-                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      onInvalid={(e) => handleInvalid(e, 'Please enter your wedding venue or city.')}
-                      onInput={handleInput}
-                      placeholder="Zana Luxury Resort, Jim Corbett"
-                      className="w-full border-b border-brand-accent bg-transparent pb-3 pt-1 text-base text-brand-text placeholder-brand-text/30 focus:border-brand-text focus:outline-none transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-3 pt-2">
-                  <div className="flex items-center justify-between">
-                    <span className="block font-sans text-[11px] uppercase tracking-[0.25em]">
-                      Service *
-                    </span>
-                    {serviceError && (
-                      <span className="font-sans text-[10px] tracking-wider text-red-400">
-                        Please select an intended service
-                      </span>
-                    )}
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {SERVICE_OPTIONS.map((option) => {
-                      const isSelected = formData.service === option;
-                      return (
-                        <button
-                          key={option}
-                          type="button"
-                          onClick={() => handleServiceSelect(option)}
-                          className={`flex items-center justify-between border px-4 py-3 text-left transition-all ${
-                            isSelected
-                              ? 'border-brand-text bg-brand-text text-brand-bg'
-                              : serviceError
-                              ? 'border-red-400/60 text-brand-text hover:border-brand-text'
-                              : 'border-brand-accent hover:border-brand-text text-brand-text'
-                          }`}
-                        >
-                          <span className="font-sans text-xs tracking-wider">{option}</span>
-                          <span className="text-xs">{isSelected ? '✓' : '+'}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label
-                    htmlFor={`${formId}-notes`}
-                    className="block font-sans text-[11px] uppercase tracking-[0.25em]"
-                  >
-                    Vision, Aesthetic, or Narrative Notes
-                  </label>
-                  <textarea
-                    id={`${formId}-notes`}
-                    rows={4}
-                    value={formData.notes}
-                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    placeholder="Share ceremony itineraries, venue details, or what matters most to your story..."
-                    className="w-full border border-brand-accent bg-transparent p-3 text-sm text-brand-text placeholder-brand-text/30 focus:border-brand-text focus:outline-none transition-colors resize-none"
-                  />
-                </div>
-
-                {status === 'error' && (
-                  <p className="font-sans text-xs tracking-wider text-red-400">
-                    Failed to dispatch your inquiry. Please try again or email us directly at hello@framesandfera.in.
-                  </p>
-                )}
-
-                <div className="pt-4">
-                  <button
-                    type="submit"
-                    disabled={status === 'submitting'}
-                    className="w-full sm:w-auto px-10 py-4 bg-brand-text text-brand-bg font-sans text-xs uppercase tracking-[0.25em] hover:bg-brand-text/85 transition-colors disabled:opacity-50 cursor-pointer"
-                  >
-                    {status === 'submitting' ? 'Transmitting...' : 'Send Inquiry'}
-                  </button>
-                </div>
-              </form>
-            )}
-          </section>
+    <main className="min-h-screen bg-[#f3d0bc] text-[#211102]">
+      {/* ========================================================
+          1. IMAGES SECTION
+          (Hero image followed by an editorial 2-image teaser gallery)
+      ======================================================== */}
+      <section className="w-full">
+        {/* Main Cover / Hero Image */}
+        <div className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden">
+          <Image
+            src="/inquiry-hero.webp" // Replace with your image path
+            alt="Frames and Fera Wedding"
+            fill
+            priority
+            className="object-cover object-center filter brightness-[0.92]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#211102]/60 via-transparent to-transparent flex flex-col justify-end items-center pb-12 text-center px-4">
+            <span className="font-sans text-xs tracking-[0.35em] text-[#f3d0bc] uppercase mb-2">
+              Inquiries &amp; Commissions
+            </span>
+            <h1 className="font-serif text-4xl md:text-6xl text-[#f3d0bc] font-normal italic tracking-wide">
+              Let&apos;s Create Something Timeless
+            </h1>
+          </div>
         </div>
-      </div>
+
+        {/* Editorial Supporting Images */}
+        <div className="max-w-5xl mx-auto px-6 pt-12 pb-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="relative h-72 md:h-96 w-full overflow-hidden">
+            <Image
+              src="/inquiry-hero.webp" // Replace with your image path
+              alt="Intimate wedding moment"
+              fill
+              className="object-cover object-center transition-transform duration-700 hover:scale-105"
+            />
+          </div>
+          <div className="relative h-72 md:h-96 w-full overflow-hidden">
+            <Image
+              src="/inquiry-hero.webp" // Replace with your image path
+              alt="Editorial portrait"
+              fill
+              className="object-cover object-center transition-transform duration-700 hover:scale-105"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================
+          2. MINIMAL, CLUTTER-FREE FORM
+      ======================================================== */}
+      <section className="max-w-2xl mx-auto px-6 py-20 md:py-28">
+        <div className="text-center mb-16">
+          <h2 className="font-serif text-3xl md:text-5xl  font-normal tracking-wide">
+            Tell Us Your Story
+          </h2>
+          <p className="font-sans text-xs tracking-[0.25em] uppercase mt-3 opacity-75">
+            We accept a limited number of celebrations each season
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-10 font-sans">
+          {/* Couple's Names */}
+          <div>
+            <label className="block text-[11px] tracking-[0.2em] uppercase opacity-60 mb-1">
+              Your Names
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full bg-transparent border-b border-[#211102]/30 py-3 text-sm placeholder-[#211102]/40 focus:outline-none focus:border-[#211102] transition duration-300"
+            />
+          </div>
+
+          {/* Email & Phone */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div>
+              <label className="block text-[11px] tracking-[0.2em] uppercase opacity-60 mb-1">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full bg-transparent border-b border-[#211102]/30 py-3 text-sm placeholder-[#211102]/40 focus:outline-none focus:border-[#211102] transition duration-300"
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] tracking-[0.2em] uppercase opacity-60 mb-1">
+                Phone / WhatsApp
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full bg-transparent border-b border-[#211102]/30 py-3 text-sm placeholder-[#211102]/40 focus:outline-none focus:border-[#211102] transition duration-300"
+              />
+            </div>
+          </div>
+
+          {/* Event Dates & Destination */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div>
+              <label className="block text-[11px] tracking-[0.2em] uppercase opacity-60 mb-1">
+                Event Date(s)
+              </label>
+              <input
+                type="text"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                className="w-full bg-transparent border-b border-[#211102]/30 py-3 text-sm placeholder-[#211102]/40 focus:outline-none focus:border-[#211102] transition duration-300"
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] tracking-[0.2em] uppercase opacity-60 mb-1">
+                City / Venue
+              </label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                className="w-full bg-transparent border-b border-[#211102]/30 py-3 text-sm placeholder-[#211102]/40 focus:outline-none focus:border-[#211102] transition duration-300"
+              />
+            </div>
+          </div>
+
+          {/* Vision Message */}
+          <div>
+            <label className="block text-[11px] tracking-[0.2em] uppercase opacity-60 mb-1">
+              Additional Notes
+            </label>
+            <textarea
+              name="message"
+              rows={3}
+              value={formData.message}
+              onChange={handleChange}
+              className="w-full bg-transparent border border-brand-primary/30  text-sm placeholder-[#211102]/40 focus:outline-none focus:border-[#211102] transition duration-300 resize-none"
+            />
+          </div>
+
+          {/* Submit CTA */}
+          <div className="pt-6 text-center">
+            <button
+              type="submit"
+              className="px-12 py-4 border border-[#211102] text-xs uppercase tracking-[0.25em] font-medium hover:bg-[#211102] hover:text-[#f3d0bc] transition-all duration-300"
+            >
+              Submit Inquiry
+            </button>
+          </div>
+        </form>
+      </section>
+
+      {/* ========================================================
+          3. STUDIO ADDRESS & CONTACT DETAILS
+      ======================================================== */}
+      <section className="border-t border-[#211102]/20 py-20 px-6">
+        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+          {/* Studio Location */}
+          <div className="space-y-3">
+            <h3 className="font-serif text-xl ">Based In</h3>
+            <p className="font-sans text-xs tracking-widest uppercase opacity-75 leading-relaxed">
+              Delhi NCR
+            </p>
+          </div>
+
+          {/* Direct Communication */}
+          <div className="space-y-3">
+            <h3 className="font-serif text-xl">Direct Inquiries</h3>
+            <p className="font-sans text-xs tracking-widest uppercase opacity-75 leading-relaxed">
+              +91 74089 13971
+              <br />
+              contact@framesandfera.com
+              <br />
+              Mon &ndash; Sat &bull; 10:00 to 19:00
+            </p>
+          </div>
+
+          {/* Availability */}
+          <div className="space-y-3">
+            <h3 className="font-serif text-xl italic">Commissions</h3>
+            <p className="font-sans text-xs tracking-widest uppercase opacity-75 leading-relaxed">
+              Available for Destination Weddings
+              <br />
+              Across India &amp; Worldwide
+              <br />
+              By Prior Appointment Only
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

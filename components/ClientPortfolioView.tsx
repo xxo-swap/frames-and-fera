@@ -57,36 +57,41 @@ export default function ClientPortfolioView({ client }: Props) {
 
   return (
     <div className="my-16 min-h-screen bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-accent selection:text-brand-bg">
-      <header className="relative w-full border-b border-brand-accent/40 pt-24 pb-16 px-6 sm:px-12 md:px-20">
+      <header className="relative w-full border-b border-brand-accent/40 pt-20 pb-12 px-6 sm:px-12 md:px-20">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-8">
-          <div className="space-y-4">
-            <span className="text-xs uppercase tracking-[0.25em] text-brand-text/60">
+          <div className="space-y-3">
+            {/* Reduced ~20%: text-xs (12px) -> text-[10px] */}
+            <span className="text-[10px] uppercase tracking-[0.25em] text-brand-text/60">
               {client.location} — {client.date}
             </span>
-            <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl tracking-tight leading-[0.95] font-light">
+            {/* Reduced ~20%: text-5xl/7xl/8xl (48/72/96px) -> text-[38px]/text-5xl/text-[64px] */}
+            <h1 className="font-serif text-[38px] sm:text-5xl md:text-[64px] tracking-tight leading-[0.95] font-light">
               {client.coupleNames}
             </h1>
-            <p className="text-sm font-sans text-brand-text/50 tracking-wider">
+            {/* Reduced ~20%: text-sm (14px) -> text-[11px] */}
+            <p className="text-[11px] font-sans text-brand-text/50 tracking-wider">
               {client.venue}
             </p>
           </div>
 
-          <div className="flex flex-col items-start md:items-end gap-2">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-brand-text/50">
+          <div className="flex flex-col items-start md:items-end gap-1.5">
+            {/* Reduced ~20%: text-[10px] -> text-[8px] */}
+            <span className="text-[8px] uppercase tracking-[0.25em] text-brand-text/50">
               Services Commissioned
             </span>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {client.services && client.services.length > 0 ? (
                 client.services.map((service) => (
                   <span
                     key={service}
-                    className="px-3.5 py-1.5 text-[11px] uppercase tracking-[0.15em] border border-brand-accent/50 bg-brand-accent/10 rounded-full font-light"
+                    /* Reduced ~20%: text-[11px] -> text-[9px] */
+                    className="px-3 py-1 text-[9px] uppercase tracking-[0.15em] border border-brand-accent/50 bg-brand-accent/10 rounded-full font-light"
                   >
                     {service}
                   </span>
                 ))
               ) : (
-                <span className="px-3.5 py-1.5 text-[11px] uppercase tracking-[0.15em] border border-brand-accent/50 bg-brand-accent/10 rounded-full font-light">
+                <span className="px-3 py-1 text-[9px] uppercase tracking-[0.15em] border border-brand-accent/50 bg-brand-accent/10 rounded-full font-light">
                   {client.hasPhotoGallery ? "Photography" : "Cinematic Film"}
                 </span>
               )}
@@ -95,15 +100,16 @@ export default function ClientPortfolioView({ client }: Props) {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 py-12 space-y-16">
+      <main className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 py-10 space-y-12">
         <nav
           aria-label="Story sections"
-          className="flex items-center space-x-6 sm:space-x-8 border-b border-brand-accent/40 pb-4 overflow-x-auto no-scrollbar"
+          className="flex items-center space-x-6 sm:space-x-8 border-b border-brand-accent/40 pb-3 overflow-x-auto no-scrollbar"
         >
+          {/* Reduced ~20%: text-xs/text-sm (12/14px) -> text-[10px]/text-[11px] */}
           <button
             type="button"
             onClick={() => setActiveTab("all")}
-            className={`relative text-xs sm:text-sm tracking-[0.2em] uppercase transition-all pb-2 whitespace-nowrap cursor-pointer select-none ${
+            className={`relative text-[10px] sm:text-[11px] tracking-[0.2em] uppercase transition-all pb-2 whitespace-nowrap cursor-pointer select-none ${
               activeTab === "all"
                 ? "text-brand-text font-medium"
                 : "text-brand-text/50 hover:text-brand-text"
@@ -119,7 +125,7 @@ export default function ClientPortfolioView({ client }: Props) {
             <button
               type="button"
               onClick={() => setActiveTab("films")}
-              className={`relative text-xs sm:text-sm tracking-[0.2em] uppercase transition-all pb-2 whitespace-nowrap cursor-pointer select-none ${
+              className={`relative text-[10px] sm:text-[11px] tracking-[0.2em] uppercase transition-all pb-2 whitespace-nowrap cursor-pointer select-none ${
                 activeTab === "films"
                   ? "text-brand-text font-medium"
                   : "text-brand-text/50 hover:text-brand-text"
@@ -140,7 +146,7 @@ export default function ClientPortfolioView({ client }: Props) {
                   key={event.id}
                   type="button"
                   onClick={() => setActiveTab(event.id)}
-                  className={`relative text-xs sm:text-sm tracking-[0.2em] uppercase transition-all pb-2 whitespace-nowrap cursor-pointer select-none ${
+                  className={`relative text-[10px] sm:text-[11px] tracking-[0.2em] uppercase transition-all pb-2 whitespace-nowrap cursor-pointer select-none ${
                     isSelected
                       ? "text-brand-text font-medium"
                       : "text-brand-text/50 hover:text-brand-text"
@@ -156,19 +162,21 @@ export default function ClientPortfolioView({ client }: Props) {
         </nav>
 
         {(activeTab === "all" || activeTab === "films") && hasFilms && (
-          <section className="space-y-8 pb-12 border-b border-brand-accent/30">
+          <section className="space-y-6 pb-10 border-b border-brand-accent/30">
             <div className="flex justify-between items-baseline">
-              <h2 className="font-serif text-3xl md:text-4xl font-light">
+              {/* Reduced ~20%: text-3xl/4xl (30/36px) -> text-2xl/text-[29px] */}
+              <h2 className="font-serif text-2xl md:text-[29px] font-light">
                 Cinematography
               </h2>
-              <span className="text-xs uppercase tracking-widest text-brand-text/60">
+              {/* Reduced ~20%: text-xs (12px) -> text-[10px] */}
+              <span className="text-[10px] uppercase tracking-widest text-brand-text/60">
                 Official Releases
               </span>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {teaserEmbed && (
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="relative aspect-video w-full overflow-hidden bg-brand-accent/10 border border-brand-accent/40">
                     <iframe
                       src={teaserEmbed}
@@ -178,14 +186,15 @@ export default function ClientPortfolioView({ client }: Props) {
                       className="w-full h-full border-0"
                     />
                   </div>
-                  <span className="text-xs uppercase tracking-widest text-brand-text/70 block">
+                  {/* Reduced ~20%: text-xs (12px) -> text-[10px] */}
+                  <span className="text-[10px] uppercase tracking-widest text-brand-text/70 block">
                     Cinematic Teaser
                   </span>
                 </div>
               )}
 
               {filmEmbed && (
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="relative aspect-video w-full overflow-hidden bg-brand-accent/10 border border-brand-accent/40">
                     <iframe
                       src={filmEmbed}
@@ -195,7 +204,8 @@ export default function ClientPortfolioView({ client }: Props) {
                       className="w-full h-full border-0"
                     />
                   </div>
-                  <span className="text-xs uppercase tracking-widest text-brand-text/70 block">
+                  {/* Reduced ~20%: text-xs (12px) -> text-[10px] */}
+                  <span className="text-[10px] uppercase tracking-widest text-brand-text/70 block">
                     {client.films?.fullWeddingFilmUrl
                       ? "Full Wedding Film"
                       : client.films?.highlightUrl
@@ -209,22 +219,23 @@ export default function ClientPortfolioView({ client }: Props) {
         )}
 
         {activeTab === "films" && !hasFilms && (
-          <div className="py-20 text-center">
-            <p className="font-serif text-2xl italic text-brand-text/60">
+          <div className="py-16 text-center">
+            {/* Reduced ~20%: text-2xl (24px) -> text-[19px] */}
+            <p className="font-serif text-[19px] italic text-brand-text/60">
               No film releases commissioned for this collection.
             </p>
           </div>
         )}
 
         {activeTab !== "films" && (
-          <div className="space-y-20">
+          <div className="space-y-16">
             {displayedEvents.map((event) => (
-              <section key={event.id} className="space-y-8">
-                <div className="flex justify-between items-baseline border-b border-brand-accent/20 pb-4">
-                  <h2 className="font-serif text-3xl md:text-4xl font-light">
+              <section key={event.id} className="space-y-6">
+                <div className="flex justify-between items-baseline border-b border-brand-accent/20 pb-3">
+                  {/* Reduced ~20%: text-3xl/4xl (30/36px) -> text-2xl/text-[29px] */}
+                  <h2 className="font-serif text-2xl md:text-[29px] font-light">
                     {event.name}
                   </h2>
-                  
                 </div>
 
                 <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
@@ -257,8 +268,9 @@ export default function ClientPortfolioView({ client }: Props) {
             ))}
 
             {displayedEvents.length === 0 && (
-              <div className="py-20 text-center">
-                <p className="font-serif text-2xl italic text-brand-text/60">
+              <div className="py-16 text-center">
+                {/* Reduced ~20%: text-2xl (24px) -> text-[19px] */}
+                <p className="font-serif text-[19px] italic text-brand-text/60">
                   No photographic frames found for this archive.
                 </p>
               </div>
@@ -286,10 +298,11 @@ export default function ClientPortfolioView({ client }: Props) {
               priority
               sizes="100vw"
             />
+            {/* Reduced ~20%: text-xs (12px) -> text-[10px] */}
             <button
               type="button"
               onClick={closeLightbox}
-              className="absolute -top-10 right-0 text-white/90 hover:text-white text-xs uppercase tracking-widest transition-opacity cursor-pointer focus:outline-none focus:underline"
+              className="absolute -top-9 right-0 text-white/90 hover:text-white text-[10px] uppercase tracking-widest transition-opacity cursor-pointer focus:outline-none focus:underline"
             >
               Close Frame [✕]
             </button>
