@@ -11,22 +11,22 @@ gsap.registerPlugin(ScrollTrigger);
 
 const TEAM = [
   {
-    name: 'Aarav Sharma',
-    role: 'Lead Cinematographer & Director',
-    image: '/aarav.webp', // Replace with your image path
-    instagram: '@aarav.frames',
+    name: 'Sunny',
+    role: 'Cinematographer',
+    image: '/team/sunny.webp', // Replace with your image path
+    instagram: '@sgsunnny',
     instagramUrl: 'https://instagram.com',
     journey:
-      'Trained in documentary motion and analog film archives. Aarav started capturing unscripted street stories before bringing 16mm motion, Super 8 grain, and deliberate, quiet pacing to weddings worldwide.',
+      'Sunny, co-founder and lead cinematographer at Frames and Fera, weaves visual symphonies out of real, unscripted emotions. With an intuitive eye for movement, light, and narrative rhythm, he translates the energy and romance of your wedding into cinematic art. His storytelling captures the subtle, heartfelt moments that define your bond. With Sunny behind the camera, your wedding film becomes an evocative heirloom you will revisit again and again.',
   },
   {
-    name: 'Meera Sen',
-    role: 'Principal Photographer',
-    image: '/meera.webp', // Replace with your image path
-    instagram: '@meera.analog',
+    name: 'Shwetank',
+    role: 'Photographer',
+    image: '/team/shwetank.webp', // Replace with your image path
+    instagram: '@cruising_wolf',
     instagramUrl: 'https://instagram.com',
     journey:
-      'With a background in editorial portraiture and fine art, Meera works with medium format analog cameras and organic light, prioritizing the subtle, fleeting in-between moments over stiff poses.',
+      'Shwetank, co-founder and lead photographer at Frames and Fera, infuses every still with elegance, intention, and depth. With a keen eye for framing and a passion for honest portraiture, he captures fleeting glances and quiet rituals, transforming them into timeless works of art. Shwetank’s grounded presence lets you stay completely immersed in your celebration while your story is preserved in stunning, soul-stirring detail.',
   },
 ];
 

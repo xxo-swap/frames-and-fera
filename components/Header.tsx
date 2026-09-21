@@ -161,7 +161,7 @@ export default function Header() {
               width={150}
               height={60}
               priority
-              className={`h-[60px] w-[60px] scale-50 sm:scale-110 object-contain md:w-[100px] transition-all duration-300 ${
+              className={`h-[60px] w-[60px] scale-70 sm:scale-160 object-contain md:w-[100px] transition-all duration-300 ${
                 isHomePage && !isOpen ? " " : ""
               }`}
             />
