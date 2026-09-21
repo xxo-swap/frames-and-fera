@@ -10,15 +10,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const TEAM = [
-  {
-    name: 'Sunny',
-    role: 'Cinematographer',
-    image: '/team/sunny.webp', // Replace with your image path
-    instagram: '@sgsunnny',
-    instagramUrl: 'https://instagram.com',
-    journey:
-      'Sunny, co-founder and lead cinematographer at Frames and Fera, weaves visual symphonies out of real, unscripted emotions. With an intuitive eye for movement, light, and narrative rhythm, he translates the energy and romance of your wedding into cinematic art. His storytelling captures the subtle, heartfelt moments that define your bond. With Sunny behind the camera, your wedding film becomes an evocative heirloom you will revisit again and again.',
-  },
+ 
   {
     name: 'Shwetank',
     role: 'Photographer',
@@ -28,6 +20,16 @@ const TEAM = [
     journey:
       'Shwetank, co-founder and lead photographer at Frames and Fera, infuses every still with elegance, intention, and depth. With a keen eye for framing and a passion for honest portraiture, he captures fleeting glances and quiet rituals, transforming them into timeless works of art. Shwetank’s grounded presence lets you stay completely immersed in your celebration while your story is preserved in stunning, soul-stirring detail.',
   },
+
+   {
+    name: 'Sunny',
+    role: 'Cinematographer',
+    image: '/team/sunny.webp', // Replace with your image path
+    instagram: '@sgsunnny',
+    instagramUrl: 'https://instagram.com',
+    journey:
+      'Sunny, co-founder and lead cinematographer at Frames and Fera, weaves visual symphonies out of real, unscripted emotions. With an intuitive eye for movement, light, and narrative rhythm, he translates the energy and romance of your wedding into cinematic art. His storytelling captures the subtle, heartfelt moments that define your bond. With Sunny behind the camera, your wedding film becomes an evocative heirloom you will revisit again and again.',
+  }
 ];
 
 export default function AboutSection() {
@@ -140,7 +142,7 @@ export default function AboutSection() {
                   alt={member.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover object-center filter grayscale contrast-[1.05] group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700 ease-out"
+                  className="object-cover object-center filter  contrast-[1.05]   transition-all duration-700 ease-out"
                 />
                 <div className="absolute top-4 right-4 bg-brand-bg/85 backdrop-blur-sm px-3 py-1 text-[9px] uppercase tracking-[0.2em] text-brand-text/80 border border-brand-accent/20">
                   0{idx + 1}
