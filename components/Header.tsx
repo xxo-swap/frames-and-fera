@@ -149,14 +149,14 @@ export default function Header() {
       {/* =========================
           MAIN HEADER
       ========================== */}
-      <header className="relative top-0 z-[100] w-full px-6 py-4 md:px-12">
+      <header className="relative top-0 z-[100] w-full px-6 py-4 md:px-12 bg-brand-bg">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <Link
             href="/"
             className="group relative z-[110] flex items-center"
           >
             <Image
-              src={isHomePage && !isOpen ? "/whiteLogo.png" : "/blackLogo.png"}
+              src="/blackLogo.png"
               alt="Frames & Fera"
               width={150}
               height={60}
@@ -180,8 +180,8 @@ export default function Header() {
                   className={`border-b font-sans text-xs uppercase tracking-[0.2em] py-1 px-2 transition-all duration-300 ${
                     isHomePage
                       ? isActive
-                        ? "text-brand-accent border-brand-accent"
-                        : "text-brand-accent/90 border-transparent hover:text-brand-accent hover:border-brand-accent/60"
+                        ? "text-brand-text border-brand-text"
+                        : "text-brand-text/90 border-transparent hover:text-brand-text hover:border-brand-text/60"
                       : isActive
                       ? "text-brand-text border-brand-text font-medium"
                       : "text-brand-text/70 border-transparent hover:text-brand-text hover:border-brand-text/50"
