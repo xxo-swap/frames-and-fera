@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 const TEAM = [
  
   {
-    name: 'Shwetank',
+    name: 'Shwetank Raj',
     role: 'Photographer',
     image: '/team/shwetank.webp', // Replace with your image path
     instagram: '@cruising_wolf',
@@ -22,7 +22,7 @@ const TEAM = [
   },
 
    {
-    name: 'Sunny',
+    name: 'Sunny Gupta',
     role: 'Cinematographer',
     image: '/team/sunny.webp', // Replace with your image path
     instagram: '@sgsunnny',
@@ -114,16 +114,16 @@ export default function AboutSection() {
               The Duo &bull; Frames &amp; Fera
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl uppercase tracking-tight font-normal">
-              Meet The Visionaries
+              Behind the Cameras
             </h2>
           </div>
 
           <div className="lg:col-span-7 flex flex-col justify-end space-y-4">
             <p className="font-serif italic text-lg sm:text-xl text-brand-text/90 leading-relaxed">
-              &ldquo;We don&apos;t curate manufactured poses. We document the natural tempo, raw warmth, and quiet glances that outlast the day itself.&rdquo;
+            Big celebrations, quiet rituals, and all the raw, unscripted moments in between. At Frames and Fera, we don’t just film what your wedding looked like we capture what it felt like to be there. No stiff poses, no forced drama. Just your real story, preserved as it happened.
             </p>
             <p className="font-sans text-xs uppercase tracking-[0.2em] text-brand-text/60 leading-loose max-w-xl">
-              From Delhi NCR to destination vows across the globe, our craft is grounded in analog sensitivity, 35mm film grain, and non-intrusive storytelling.
+            From our base in Delhi NCR to destination weddings across India, we travel wherever your story takes us.
             </p>
           </div>
         </div>
