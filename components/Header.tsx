@@ -199,12 +199,13 @@ export default function Header() {
           <button
             type="button"
             onClick={toggleMenu}
-            className={`relative z-[110] p-3 transition-colors duration-300 md:hidden cursor-pointer ${
-              isHomePage && !isOpen ? "text-brand-accent" : "text-brand-text"
+            className={`relative z-[110] p-3 transition-colors duration-300 md:hidden flex flex-row gap-2 items-center justify-center cursor-pointer ${
+              isHomePage && !isOpen ? "text-brand-text" : "text-brand-text"
             }`}
             aria-label={isOpen ? "Close menu" : "Open menu"}
             aria-expanded={isOpen}
           >
+            Menu
             <span className="relative block h-[20px] w-[20px]">
               <Menu
                 size={20}

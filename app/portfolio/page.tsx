@@ -17,8 +17,8 @@ export default function PortfolioPage() {
           <span className="text-[10px] uppercase tracking-[0.3em] text-brand-accent">
             Archive
           </span>
-          {/* Scaled down ~20%: text-5xl/7xl/8xl (48/72/96px) -> text-[38px]/text-5xl/text-[64px] */}
-          <h1 className="font-serif text-[38px] sm:text-5xl md:text-[64px] tracking-tight leading-[0.9] font-light text-brand-text">
+          {/* Scaled down ~20%: text-5xl/7xl/8xl (48/72/96px) -> text-[38px]/text-5xl/text-[48px] */}
+          <h1 className="font-serif text-[25px] sm:text-3xl md:text-[48px] tracking-tight leading-[0.9] font-light text-brand-text">
             Selected Stories
           </h1>
           {/* Scaled down ~20%: text-sm/text-base (14/16px) -> text-[11px] sm:text-[13px] */}

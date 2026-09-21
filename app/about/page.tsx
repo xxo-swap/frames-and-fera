@@ -111,7 +111,7 @@ export default function AboutSection() {
         >
           <div className="lg:col-span-5">
             <span className="font-sans text-[10px] uppercase tracking-[0.35em] text-brand-text/60 block mb-3">
-              The Duo &bull; Frames &amp; Fera
+              The Duo &bull; Frames and Fera
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl uppercase tracking-tight font-normal">
               Behind the Cameras
@@ -119,7 +119,8 @@ export default function AboutSection() {
           </div>
 
           <div className="lg:col-span-7 flex flex-col justify-end space-y-4">
-            <p className="font-serif italic text-lg sm:text-xl text-brand-text/90 leading-relaxed">
+            <p className="font-serif 
+             text-lg sm:text-xl text-brand-text/90 leading-relaxed">
             Big celebrations, quiet rituals, and all the raw, unscripted moments in between. At Frames and Fera, we don’t just film what your wedding looked like we capture what it felt like to be there. No stiff poses, no forced drama. Just your real story, preserved as it happened.
             </p>
             <p className="font-sans text-xs uppercase tracking-[0.2em] text-brand-text/60 leading-loose max-w-xl">
@@ -203,7 +204,7 @@ export default function AboutSection() {
             <span className="font-sans text-[10px] uppercase tracking-[0.25em] text-brand-text/50 block mb-1">
               Limited Commissions
             </span>
-            <p className="font-serif text-xl sm:text-2xl italic tracking-wide">
+            <p className="font-serif text-xl sm:text-2xl  tracking-wide">
               Accepting celebrations for the upcoming seasons
             </p>
           </div>
