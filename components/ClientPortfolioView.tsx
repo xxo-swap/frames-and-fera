@@ -1,7 +1,7 @@
 // components/ClientPortfolioView.tsx
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ClientPortfolio } from "@/data/client";
 
@@ -9,27 +9,11 @@ interface Props {
   client: ClientPortfolio;
 }
 
-const getYouTubeEmbedUrl = (url?: string) => {
-  if (!url) return null;
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-  return match && match[2].length === 11
-    ? `https://www.youtube.com/embed/${match[2]}`
-    : null;
-};
-
 export default function ClientPortfolioView({ client }: Props) {
-  const [activeTab, setActiveTab] = useState<string>("all");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const teaserEmbed = getYouTubeEmbedUrl(client.films?.teaserUrl);
-  const filmEmbed = getYouTubeEmbedUrl(
-    client.films?.fullWeddingFilmUrl ||
-      client.films?.highlightUrl ||
-      client.films?.preWeddingFilmUrl
-  );
-  const hasFilms = Boolean(teaserEmbed || filmEmbed);
-  const hasPhotos = Boolean(client.events && client.events.length > 0);
+  const allImages =
+    client.events?.flatMap((event) => event.images || []) || [];
 
   const closeLightbox = useCallback(() => setSelectedImage(null), []);
 
@@ -49,236 +33,59 @@ export default function ClientPortfolioView({ client }: Props) {
     };
   }, [selectedImage, closeLightbox]);
 
-  const displayedEvents = useMemo(() => {
-    if (!client.events) return [];
-    if (activeTab === "all") return client.events;
-    return client.events.filter((e) => e.id === activeTab);
-  }, [client.events, activeTab]);
+  // If the client has no photo frames (e.g. film-only portfolio)
+  if (allImages.length === 0) {
+    return null; // Or return a custom empty state / redirect
+  }
 
   return (
     <div className="my-16 min-h-screen bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-accent selection:text-brand-bg">
+      {/* Editorial Header */}
       <header className="relative w-full border-b border-brand-accent/40 pt-20 pb-12 px-6 sm:px-12 md:px-20">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-8">
-          <div className="space-y-3">
-            {/* Reduced ~20%: text-xs (12px) -> text-[10px] */}
-            <span className="text-[10px] uppercase tracking-[0.25em] text-brand-text/60">
-              {client.location} — {client.date}
-            </span>
-            {/* Reduced ~20%: text-5xl/7xl/8xl (48/72/96px) -> text-[38px]/text-5xl/text-[64px] */}
-            <h1 className="font-serif text-[38px] sm:text-5xl md:text-[64px] tracking-tight leading-[0.95] font-light">
-              {client.coupleNames}
-            </h1>
-            {/* Reduced ~20%: text-sm (14px) -> text-[11px] */}
-            <p className="text-[11px] font-sans text-brand-text/50 tracking-wider">
-              {client.venue}
-            </p>
-          </div>
-
-          <div className="flex flex-col items-start md:items-end gap-1.5">
-            {/* Reduced ~20%: text-[10px] -> text-[8px] */}
-            <span className="text-[8px] uppercase tracking-[0.25em] text-brand-text/50">
-              Services Commissioned
-            </span>
-            <div className="flex flex-wrap gap-1.5">
-              {client.services && client.services.length > 0 ? (
-                client.services.map((service) => (
-                  <span
-                    key={service}
-                    /* Reduced ~20%: text-[11px] -> text-[9px] */
-                    className="px-3 py-1 text-[9px] uppercase tracking-[0.15em] border border-brand-accent/50 bg-brand-accent/10 rounded-full font-light"
-                  >
-                    {service}
-                  </span>
-                ))
-              ) : (
-                <span className="px-3 py-1 text-[9px] uppercase tracking-[0.15em] border border-brand-accent/50 bg-brand-accent/10 rounded-full font-light">
-                  {client.hasPhotoGallery ? "Photography" : "Cinematic Film"}
-                </span>
-              )}
-            </div>
-          </div>
+        <div className="max-w-7xl mx-auto flex flex-col justify-start space-y-3">
+          <span className="text-[10px] uppercase tracking-[0.25em] text-brand-text/60">
+            {client.location} — {client.date}
+          </span>
+          <h1 className="font-serif text-[38px] sm:text-5xl md:text-[64px] tracking-tight leading-[0.95] font-light">
+            {client.coupleNames}
+          </h1>
+          <p className="text-[11px] font-sans text-brand-text/50 tracking-wider">
+            {client.venue}
+          </p>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 py-10 space-y-12">
-        <nav
-          aria-label="Story sections"
-          className="flex items-center space-x-6 sm:space-x-8 border-b border-brand-accent/40 pb-3 overflow-x-auto no-scrollbar"
-        >
-          {/* Reduced ~20%: text-xs/text-sm (12/14px) -> text-[10px]/text-[11px] */}
-          <button
-            type="button"
-            onClick={() => setActiveTab("all")}
-            className={`relative text-[10px] sm:text-[11px] tracking-[0.2em] uppercase transition-all pb-2 whitespace-nowrap cursor-pointer select-none ${
-              activeTab === "all"
-                ? "text-brand-text font-medium"
-                : "text-brand-text/50 hover:text-brand-text"
-            }`}
-          >
-            All Archives
-            {activeTab === "all" && (
-              <span className="absolute bottom-[-1px] left-0 right-0 h-[1.5px] bg-brand-text" />
-            )}
-          </button>
-
-          {hasFilms && (
-            <button
-              type="button"
-              onClick={() => setActiveTab("films")}
-              className={`relative text-[10px] sm:text-[11px] tracking-[0.2em] uppercase transition-all pb-2 whitespace-nowrap cursor-pointer select-none ${
-                activeTab === "films"
-                  ? "text-brand-text font-medium"
-                  : "text-brand-text/50 hover:text-brand-text"
-              }`}
+      {/* Main Content - Photos Only */}
+      <main className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 py-10 space-y-16">
+        <section className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+          {allImages.map((src, index) => (
+            <div
+              key={`${src}-${index}`}
+              role="button"
+              tabIndex={0}
+              aria-label={`Enlarge photo ${index + 1}`}
+              onClick={() => setSelectedImage(src)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") setSelectedImage(src);
+              }}
+              className="break-inside-avoid relative w-full overflow-hidden bg-brand-accent/10 border border-brand-accent/30 cursor-zoom-in group transition-colors duration-300 hover:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-text"
             >
-              Films &amp; Teasers
-              {activeTab === "films" && (
-                <span className="absolute bottom-[-1px] left-0 right-0 h-[1.5px] bg-brand-text" />
-              )}
-            </button>
-          )}
-
-          {hasPhotos &&
-            client.events.map((event) => {
-              const isSelected = activeTab === event.id;
-              return (
-                <button
-                  key={event.id}
-                  type="button"
-                  onClick={() => setActiveTab(event.id)}
-                  className={`relative text-[10px] sm:text-[11px] tracking-[0.2em] uppercase transition-all pb-2 whitespace-nowrap cursor-pointer select-none ${
-                    isSelected
-                      ? "text-brand-text font-medium"
-                      : "text-brand-text/50 hover:text-brand-text"
-                  }`}
-                >
-                  {event.name} Photos
-                  {isSelected && (
-                    <span className="absolute bottom-[-1px] left-0 right-0 h-[1.5px] bg-brand-text" />
-                  )}
-                </button>
-              );
-            })}
-        </nav>
-
-        {(activeTab === "all" || activeTab === "films") && hasFilms && (
-          <section className="space-y-6 pb-10 border-b border-brand-accent/30">
-            <div className="flex justify-between items-baseline">
-              {/* Reduced ~20%: text-3xl/4xl (30/36px) -> text-2xl/text-[29px] */}
-              <h2 className="font-serif text-2xl md:text-[29px] font-light">
-                Cinematography
-              </h2>
-              {/* Reduced ~20%: text-xs (12px) -> text-[10px] */}
-              <span className="text-[10px] uppercase tracking-widest text-brand-text/60">
-                Official Releases
-              </span>
+              <Image
+                src={src}
+                alt={`${client.coupleNames} frame ${index + 1}`}
+                width={0}
+                height={0}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="w-full h-auto object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-[#211102]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
             </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {teaserEmbed && (
-                <div className="space-y-2">
-                  <div className="relative aspect-video w-full overflow-hidden bg-brand-accent/10 border border-brand-accent/40">
-                    <iframe
-                      src={teaserEmbed}
-                      title={`${client.coupleNames} Wedding Teaser`}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="w-full h-full border-0"
-                    />
-                  </div>
-                  {/* Reduced ~20%: text-xs (12px) -> text-[10px] */}
-                  <span className="text-[10px] uppercase tracking-widest text-brand-text/70 block">
-                    Cinematic Teaser
-                  </span>
-                </div>
-              )}
-
-              {filmEmbed && (
-                <div className="space-y-2">
-                  <div className="relative aspect-video w-full overflow-hidden bg-brand-accent/10 border border-brand-accent/40">
-                    <iframe
-                      src={filmEmbed}
-                      title={`${client.coupleNames} Wedding Film`}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="w-full h-full border-0"
-                    />
-                  </div>
-                  {/* Reduced ~20%: text-xs (12px) -> text-[10px] */}
-                  <span className="text-[10px] uppercase tracking-widest text-brand-text/70 block">
-                    {client.films?.fullWeddingFilmUrl
-                      ? "Full Wedding Film"
-                      : client.films?.highlightUrl
-                      ? "Highlight Film"
-                      : "Pre-Wedding Film"}
-                  </span>
-                </div>
-              )}
-            </div>
-          </section>
-        )}
-
-        {activeTab === "films" && !hasFilms && (
-          <div className="py-16 text-center">
-            {/* Reduced ~20%: text-2xl (24px) -> text-[19px] */}
-            <p className="font-serif text-[19px] italic text-brand-text/60">
-              No film releases commissioned for this collection.
-            </p>
-          </div>
-        )}
-
-        {activeTab !== "films" && (
-          <div className="space-y-16">
-            {displayedEvents.map((event) => (
-              <section key={event.id} className="space-y-6">
-                <div className="flex justify-between items-baseline border-b border-brand-accent/20 pb-3">
-                  {/* Reduced ~20%: text-3xl/4xl (30/36px) -> text-2xl/text-[29px] */}
-                  <h2 className="font-serif text-2xl md:text-[29px] font-light">
-                    {event.name}
-                  </h2>
-                </div>
-
-                <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-                  {event.images.map((src, index) => (
-                    <div
-                      key={`${src}-${index}`}
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`Enlarge photo ${index + 1} from ${event.name}`}
-                      onClick={() => setSelectedImage(src)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") setSelectedImage(src);
-                      }}
-                      className="break-inside-avoid relative w-full overflow-hidden bg-brand-accent/10 border border-brand-accent/30 cursor-zoom-in group transition-colors duration-300 hover:border-brand-accent focus:outline-none focus:ring-2 focus:ring-brand-text"
-                    >
-                      <Image
-                        src={src}
-                        alt={`${client.coupleNames} - ${event.name} frame ${index + 1}`}
-                        width={0}
-                        height={0}
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="w-full h-auto object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-[#211102]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                    </div>
-                  ))}
-                </div>
-              </section>
-            ))}
-
-            {displayedEvents.length === 0 && (
-              <div className="py-16 text-center">
-                {/* Reduced ~20%: text-2xl (24px) -> text-[19px] */}
-                <p className="font-serif text-[19px] italic text-brand-text/60">
-                  No photographic frames found for this archive.
-                </p>
-              </div>
-            )}
-          </div>
-        )}
+          ))}
+        </section>
       </main>
 
+      {/* Lightbox Modal */}
       {selectedImage && (
         <div
           role="dialog"
@@ -298,7 +105,6 @@ export default function ClientPortfolioView({ client }: Props) {
               priority
               sizes="100vw"
             />
-            {/* Reduced ~20%: text-xs (12px) -> text-[10px] */}
             <button
               type="button"
               onClick={closeLightbox}

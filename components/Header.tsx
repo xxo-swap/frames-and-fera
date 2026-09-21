@@ -20,7 +20,7 @@ export default function Header() {
   const isHomePage = pathname === "/";
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isAtTop, setIsAtTop] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -47,10 +47,27 @@ export default function Header() {
     };
   }, [isOpen]);
 
-  // Scroll visibility logic
+  // Directional smooth scroll listener
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+
     const handleScroll = () => {
-      setIsAtTop(window.scrollY < 20);
+      const currentScrollY = window.scrollY;
+
+      // Always show at very top of page
+      if (currentScrollY <= 30) {
+        setIsVisible(true);
+      } 
+      // Scrolling Down: slide out smoothly
+      else if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        setIsVisible(false);
+      } 
+      // Scrolling Up: slide back in smoothly
+      else if (currentScrollY < lastScrollY) {
+        setIsVisible(true);
+      }
+
+      lastScrollY = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -140,16 +157,16 @@ export default function Header() {
   return (
     <div
       ref={containerRef}
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-        isAtTop || isOpen
-          ? "translate-y-0 opacity-100"
+      className={`fixed top-0 left-0 right-0 z-50 w-full transform will-change-transform transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        isVisible || isOpen
+          ? "translate-y-0 opacity-100 pointer-events-auto"
           : "-translate-y-full opacity-0 pointer-events-none"
       }`}
     >
       {/* =========================
           MAIN HEADER
       ========================== */}
-      <header className="relative top-0 z-[100] w-full px-6 py-4 md:px-12 bg-brand-bg">
+      <header className="relative top-0 z-[100] w-full px-6 py-4 md:px-12">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <Link
             href="/"
@@ -246,7 +263,7 @@ export default function Header() {
                   onClick={closeMenu}
                   className="group relative inline-block p-2 font-serif text-2xl uppercase tracking-wider text-brand-text"
                 >
-                  <span className="transition-all duration-300 group-hover:italic">
+                  <span className="inline-block transition-transform duration-300 ease-out group-hover:scale-105 active:scale-95">
                     {link.label}
                   </span>
 
@@ -262,11 +279,11 @@ export default function Header() {
           className="border-t border-brand-text/15 pb-6 pt-6 text-center"
         >
           <p className="font-sans text-[10px] uppercase tracking-[0.25em] text-brand-text/60">
-            Cinematic Weddings &amp; Fine Art
+            Weddings &amp; Fine Art
           </p>
 
           <p className="mt-2 font-serif text-sm italic text-brand-text/40">
-            Frames &amp; Fera
+            Frames and Fera
           </p>
         </div>
       </div>

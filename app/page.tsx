@@ -10,7 +10,6 @@ export default function Home() {
       <GifHero/>
       {/* <Hero /> */}
       <EditorialQuoteSection/>
-      <FeaturedWork/>
       <ArtisticFramesGrid/>
 
     </main>

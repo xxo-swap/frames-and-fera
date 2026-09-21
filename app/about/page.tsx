@@ -119,12 +119,9 @@ export default function AboutSection() {
           </div>
 
           <div className="lg:col-span-7 flex flex-col justify-end space-y-4">
-            <p className="font-serif 
-             text-lg sm:text-xl text-brand-text/90 leading-relaxed">
+            <p className="font-sans 
+             text-lg sm:text-xl text-brand-text/70 leading-relaxed">
             Big celebrations, quiet rituals, and all the raw, unscripted moments in between. At Frames and Fera, we don’t just film what your wedding looked like we capture what it felt like to be there. No stiff poses, no forced drama. Just your real story, preserved as it happened.
-            </p>
-            <p className="font-sans text-xs uppercase tracking-[0.2em] text-brand-text/60 leading-loose max-w-xl">
-            From our base in Delhi NCR to destination weddings across India, we travel wherever your story takes us.
             </p>
           </div>
         </div>
@@ -145,9 +142,7 @@ export default function AboutSection() {
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover object-center filter  contrast-[1.05]   transition-all duration-700 ease-out"
                 />
-                <div className="absolute top-4 right-4 bg-brand-bg/85 backdrop-blur-sm px-3 py-1 text-[9px] uppercase tracking-[0.2em] text-brand-text/80 border border-brand-accent/20">
-                  0{idx + 1}
-                </div>
+                
               </div>
 
               {/* Title & Instagram */}

@@ -10,9 +10,18 @@ interface Props {
 }
 
 export default function PortfolioGrid({ initialClients }: Props) {
+  // Exclude clients that only have films and no photo gallery
+  const photoClients = initialClients.filter((client) => {
+    const hasPhotos =
+      Boolean(client.hasPhotoGallery) ||
+      Boolean(client.events?.some((e) => e.images && e.images.length > 0));
+
+    return hasPhotos;
+  });
+
   return (
     <div className="w-full flex flex-col divide-y divide-brand-accent/30">
-      {initialClients.map((client, idx) => {
+      {photoClients.map((client, idx) => {
         const isReversed = idx % 2 !== 0;
 
         return (
@@ -32,7 +41,6 @@ export default function PortfolioGrid({ initialClients }: Props) {
                     : "md:order-1 md:items-start"
                 }`}
               >
-                {/* Mobile View Story */}
                 <div className="relative w-fit max-w-full overflow-hidden bg-brand-accent/10 border border-brand-accent/30">
                   <Image
                     src={client.featuredCover}
@@ -43,8 +51,6 @@ export default function PortfolioGrid({ initialClients }: Props) {
                     priority={idx === 0}
                     className="w-auto h-auto max-w-full max-h-[75vh] object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                   />
-
-                
                 </div>
               </div>
 
@@ -64,8 +70,6 @@ export default function PortfolioGrid({ initialClients }: Props) {
                     <span>{client.location}</span>
                   </div>
                 </div>
-
-               
               </div>
             </Link>
           </div>
