@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,19 +8,16 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Menu, X } from "lucide-react";
 
-const navLinks = [
+const NAV_LINKS = [
   { href: "/about", label: "About" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/films", label: "Films" },
   { href: "/inquiry", label: "Inquire" },
-];
+] as const;
 
 export default function Header() {
   const pathname = usePathname();
-  const isHomePage = pathname === "/";
-
   const [isOpen, setIsOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -28,14 +25,14 @@ export default function Header() {
   const footerRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
-  // Close mobile menu automatically on route change
+  // Close drawer on route navigation
   useEffect(() => {
     if (isOpen) {
       closeMenu();
     }
   }, [pathname]);
 
-  // Lock body scroll when mobile menu is active
+  // Lock body scroll during open drawer
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -47,33 +44,6 @@ export default function Header() {
     };
   }, [isOpen]);
 
-  // Directional smooth scroll listener
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Always show at very top of page
-      if (currentScrollY <= 30) {
-        setIsVisible(true);
-      } 
-      // Scrolling Down: slide out smoothly
-      else if (currentScrollY > lastScrollY && currentScrollY > 80) {
-        setIsVisible(false);
-      } 
-      // Scrolling Up: slide back in smoothly
-      else if (currentScrollY < lastScrollY) {
-        setIsVisible(true);
-      }
-
-      lastScrollY = currentScrollY;
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   useGSAP(
     () => {
       const links = linksRef.current
@@ -83,191 +53,147 @@ export default function Header() {
       tlRef.current = gsap
         .timeline({
           paused: true,
-          defaults: {
-            ease: "power3.out",
-          },
+          defaults: { ease: "power3.out" },
         })
         .to(
           menuRef.current,
           {
             y: "0%",
             autoAlpha: 1,
-            duration: 0.5,
-            ease: "power4.out",
+            duration: 0.4,
+            ease: "power3.out",
           },
           0
         )
         .fromTo(
           links,
-          {
-            y: 35,
-            autoAlpha: 0,
-            rotateX: -10,
-          },
+          { y: 25, autoAlpha: 0 },
           {
             y: 0,
             autoAlpha: 1,
-            rotateX: 0,
-            duration: 0.5,
-            stagger: 0.08,
-            ease: "power3.out",
+            duration: 0.35,
+            stagger: 0.05,
+            ease: "power2.out",
           },
-          "-=0.2"
+          "-=0.15"
         )
         .fromTo(
           footerRef.current,
-          {
-            y: 15,
-            autoAlpha: 0,
-          },
+          { y: 15, autoAlpha: 0 },
           {
             y: 0,
             autoAlpha: 1,
-            duration: 0.4,
+            duration: 0.3,
             ease: "power2.out",
           },
           "-=0.2"
         );
     },
-    {
-      scope: containerRef,
-    }
+    { scope: containerRef }
   );
 
-  const openMenu = () => {
+  const openMenu = useCallback(() => {
     if (!tlRef.current) return;
     setIsOpen(true);
     tlRef.current.play();
-  };
+  }, []);
 
-  const closeMenu = () => {
+  const closeMenu = useCallback(() => {
     if (!tlRef.current) return;
     setIsOpen(false);
     tlRef.current.reverse();
-  };
+  }, []);
 
-  const toggleMenu = () => {
-    if (isOpen) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
-  };
+  const toggleMenu = useCallback(() => {
+    if (isOpen) closeMenu();
+    else openMenu();
+  }, [isOpen, openMenu, closeMenu]);
 
   return (
-    <div
+    <header
       ref={containerRef}
-      className={`fixed top-0 left-0 right-0 z-50 w-full transform will-change-transform transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-        isVisible || isOpen
-          ? "translate-y-0 opacity-100 pointer-events-auto"
-          : "-translate-y-full opacity-0 pointer-events-none"
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 w-full bg-brand-bg/95 backdrop-blur-md border-b border-brand-accent/40 transition-colors duration-200"
     >
-      {/* =========================
-          MAIN HEADER
-      ========================== */}
-      <header className="relative top-0 z-[100] w-full px-6 py-4 md:px-12">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <Link
-            href="/"
-            className="group relative z-[110] flex items-center"
-          >
-            <Image
-              src="/blackLogo.png"
-              alt="Frames & Fera"
-              width={150}
-              height={60}
-              priority
-              className={`h-[60px] w-[80px] scale-90 sm:scale-140 object-contain md:w-[100px] transition-all duration-300 ${
-                isHomePage && !isOpen ? " " : ""
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 md:px-12">
+        {/* Brand Logo */}
+        <Link
+          href="/"
+          className="relative z-[110] flex items-center focus:outline-none"
+          aria-label="Frames and Fera Home"
+        >
+          <Image
+            src="/blackLogo.png"
+            alt="Frames & Fera Logo"
+            width={120}
+            height={48}
+            priority
+            className="h-16 w-auto object-contain transition-transform duration-300 hover:opacity-85"
+          />
+        </Link>
+
+        {/* Desktop Nav */}
+        <nav className="hidden items-center space-x-8 md:flex" aria-label="Main Navigation">
+          {NAV_LINKS.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`font-sans text-xs uppercase tracking-[0.16em] py-1 border-b transition-all duration-200 ${
+                  isActive
+                    ? "text-brand-text border-brand-text font-medium"
+                    : "text-brand-text/70 border-transparent hover:text-brand-text hover:border-brand-accent/60"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Mobile Trigger Button */}
+        <button
+          type="button"
+          onClick={toggleMenu}
+          className="relative z-[110] flex items-center gap-2 p-2 text-brand-text font-sans text-xs uppercase tracking-widest md:hidden cursor-pointer"
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isOpen}
+        >
+          <span>{isOpen ? "Close" : "Menu"}</span>
+          <span className="relative block h-5 w-5">
+            <Menu
+              size={18}
+              strokeWidth={1.5}
+              className={`absolute inset-0 transition-transform duration-300 ${
+                isOpen ? "rotate-90 opacity-0" : "rotate-0 opacity-100"
               }`}
             />
-          </Link>
+            <X
+              size={18}
+              strokeWidth={1.5}
+              className={`absolute inset-0 transition-transform duration-300 ${
+                isOpen ? "rotate-0 opacity-100" : "-rotate-90 opacity-0"
+              }`}
+            />
+          </span>
+        </button>
+      </div>
 
-          {/* =========================
-              DESKTOP NAV
-          ========================== */}
-          <nav className="hidden items-center space-x-8 md:flex">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`border-b font-sans text-xs uppercase tracking-[0.2em] py-1 px-2 transition-all duration-300 ${
-                    isHomePage
-                      ? isActive
-                        ? "text-brand-text border-brand-text"
-                        : "text-brand-text/90 border-transparent hover:text-brand-text hover:border-brand-text/60"
-                      : isActive
-                      ? "text-brand-text border-brand-text font-medium"
-                      : "text-brand-text/70 border-transparent hover:text-brand-text hover:border-brand-text/50"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* =========================
-              MOBILE MENU BUTTON
-          ========================== */}
-          <button
-            type="button"
-            onClick={toggleMenu}
-            className={`relative z-[110] p-3 transition-colors duration-300 md:hidden flex flex-row gap-2 items-center justify-center cursor-pointer ${
-              isHomePage && !isOpen ? "text-brand-text" : "text-brand-text"
-            }`}
-            aria-label={isOpen ? "Close menu" : "Open menu"}
-            aria-expanded={isOpen}
-          >
-            Menu
-            <span className="relative block h-[20px] w-[20px]">
-              <Menu
-                size={20}
-                strokeWidth={1}
-                className={`absolute inset-0 transition-all duration-300 ${
-                  isOpen ? "rotate-90 opacity-0" : "rotate-0 opacity-100"
-                }`}
-              />
-
-              <X
-                size={20}
-                strokeWidth={1}
-                className={`absolute inset-0 transition-all duration-300 ${
-                  isOpen ? "rotate-0 opacity-100" : "-rotate-90 opacity-0"
-                }`}
-              />
-            </span>
-          </button>
-        </div>
-      </header>
-
-      {/* =========================
-          MOBILE FULLSCREEN MENU
-      ========================== */}
+      {/* Mobile Drawer Menu */}
       <div
         ref={menuRef}
-        className="fixed inset-0 top-0 left-0 h-dvh w-screen z-[90] flex -translate-y-full invisible flex-col justify-between p-8 pt-28 opacity-0 md:hidden bg-brand-bg/95 backdrop-blur-xl border-b border-brand-accent/30 shadow-2xl"
-        style={{
-          perspective: "1000px",
-        }}
+        className="fixed inset-0 top-0 left-0 h-dvh w-screen z-[90] flex -translate-y-full invisible flex-col justify-between p-8 pt-28 opacity-0 md:hidden bg-brand-bg/98 backdrop-blur-xl border-b border-brand-accent/40"
       >
         <nav className="my-auto">
           <ul ref={linksRef} className="space-y-6 text-center">
-            {navLinks.map((link) => (
-              <li key={link.href} className="will-change-transform">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
                 <Link
                   href={link.href}
                   onClick={closeMenu}
-                  className="group relative inline-block p-2 font-serif text-2xl uppercase tracking-wider text-brand-text"
+                  className="font-serif text-3xl uppercase tracking-wider text-brand-text hover:text-brand-accent transition-colors"
                 >
-                  <span className="inline-block transition-transform duration-300 ease-out group-hover:scale-105 active:scale-95">
-                    {link.label}
-                  </span>
-
-                  <span className="absolute bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-brand-text transition-all duration-500 ease-out group-hover:w-full" />
+                  {link.label}
                 </Link>
               </li>
             ))}
@@ -276,17 +202,16 @@ export default function Header() {
 
         <div
           ref={footerRef}
-          className="border-t border-brand-text/15 pb-6 pt-6 text-center"
+          className="border-t border-brand-accent/30 pb-6 pt-6 text-center font-sans"
         >
-          <p className="font-sans text-[10px] uppercase tracking-[0.25em] text-brand-text/60">
+          <p className="text-[10px] uppercase tracking-[0.25em] text-brand-text/60">
             Weddings &amp; Fine Art
           </p>
-
-          <p className="mt-2 font-serif text-sm italic text-brand-text/40">
+          <p className="mt-1 font-serif text-sm italic text-brand-text/50">
             Frames and Fera
           </p>
         </div>
       </div>
-    </div>
+    </header>
   );
 }

@@ -1,3 +1,29 @@
+export type ImageOrientation = 'horizontal' | 'vertical' | 'square';
+
+export interface GalleryImage {
+  src: string;
+  width: number;
+  height: number;
+  aspectRatio: number;
+  orientation: ImageOrientation;
+}
+
+export interface EventGallery {
+  id: string;
+  name: string;
+  folder: string;
+  coverImage: string;
+  images: string[];          // Kept for backward compatibility
+  imageData?: GalleryImage[]; // New rich image metadata
+  stats?: {
+    total: number;
+    horizontal: number;
+    vertical: number;
+    square: number;
+  };
+}
+
+
 export interface EventGallery {
   id: string;
   name: string;
@@ -125,35 +151,45 @@ export const clients: ClientPortfolio[] = [
     ],
   },
 
-  // ==========================================
-  // 2. KARAN & BANI
+   // ==========================================
+  // 2. NITIN & PARIKA
   // ==========================================
   {
-    slug: 'karan-bani',
-    coupleNames: 'Karan & Bani',
-    date: '2025-11-20',
-    venue: 'Amarai Farms',
-    location: 'Chhatarpur, New Delhi',
-    featuredCover: '/clients/karan-bani/wed/057.webp',
+    slug: 'nitin-parika',
+    coupleNames: 'Nitin & Parika',
+    date: '2026-01-18',
+    venue: 'Zana Luxury Resort',
+    location: 'Jim Corbett, Uttarakhand',
+    featuredCover: '/clients/nitin-parika/wed/001.webp',
     hasPhotoGallery: true,
     services: ['Photography'],
-    eventTags: ['Wedding'],
+    eventTags: ['Engagement', 'Haldi', 'Wedding'],
     films: {},
-    testimonial: {
-      quote: 'Effortless elegance. Every frame could live inside a fine art coffee table book.',
-      narrative:
-        'We were particular about avoiding cookie-cutter wedding photography. The team moved seamlessly in the background, letting us be ourselves and preserving the true spirit of our wedding night.',
-    },
     events: [
+      {
+        id: 'eng',
+        name: 'Engagement',
+        folder: 'eng',
+        coverImage: '/clients/nitin-parika/eng/001.webp',
+        images: generatePaths('nitin-parika', 'eng', 5),
+      },
+      {
+        id: 'hal',
+        name: 'Haldi Ceremony',
+        folder: 'hal',
+        coverImage: '/clients/nitin-parika/hal/001.webp',
+        images: generatePaths('nitin-parika', 'hal', 37),
+      },
       {
         id: 'wed',
         name: 'Wedding Ceremony',
         folder: 'wed',
-        coverImage: '/clients/karan-bani/wed/001.webp',
-        images: generatePaths('karan-bani', 'wed', 86),
+        coverImage: '/clients/nitin-parika/wed/001.webp',
+        images: generatePaths('nitin-parika', 'wed', 56),
       },
     ],
   },
+
 
   // ==========================================
   // 3. RISHABH & AISHWARYA
@@ -234,41 +270,35 @@ export const clients: ClientPortfolio[] = [
     ],
   },
 
-  // ==========================================
-  // 5. NITIN & PARIKA
+ 
+
+
+    // ==========================================
+  // 5. KARAN & BANI
   // ==========================================
   {
-    slug: 'nitin-parika',
-    coupleNames: 'Nitin & Parika',
-    date: '2026-01-18',
-    venue: 'Zana Luxury Resort',
-    location: 'Jim Corbett, Uttarakhand',
-    featuredCover: '/clients/nitin-parika/wed/001.webp',
+    slug: 'karan-bani',
+    coupleNames: 'Karan & Bani',
+    date: '2025-11-20',
+    venue: 'Amarai Farms',
+    location: 'Chhatarpur, New Delhi',
+    featuredCover: '/clients/karan-bani/wed/057.webp',
     hasPhotoGallery: true,
     services: ['Photography'],
-    eventTags: ['Engagement', 'Haldi', 'Wedding'],
+    eventTags: ['Wedding'],
     films: {},
+    testimonial: {
+      quote: 'Effortless elegance. Every frame could live inside a fine art coffee table book.',
+      narrative:
+        'We were particular about avoiding cookie-cutter wedding photography. The team moved seamlessly in the background, letting us be ourselves and preserving the true spirit of our wedding night.',
+    },
     events: [
-      {
-        id: 'eng',
-        name: 'Engagement',
-        folder: 'eng',
-        coverImage: '/clients/nitin-parika/eng/001.webp',
-        images: generatePaths('nitin-parika', 'eng', 5),
-      },
-      {
-        id: 'hal',
-        name: 'Haldi Ceremony',
-        folder: 'hal',
-        coverImage: '/clients/nitin-parika/hal/001.webp',
-        images: generatePaths('nitin-parika', 'hal', 37),
-      },
       {
         id: 'wed',
         name: 'Wedding Ceremony',
         folder: 'wed',
-        coverImage: '/clients/nitin-parika/wed/001.webp',
-        images: generatePaths('nitin-parika', 'wed', 56),
+        coverImage: '/clients/karan-bani/wed/001.webp',
+        images: generatePaths('karan-bani', 'wed', 86),
       },
     ],
   },
@@ -396,29 +426,29 @@ export const clients: ClientPortfolio[] = [
   // ==========================================
   // 11. YASH & NISHITA
   // ==========================================
-  // {
-  //   slug: 'yash-nishita',
-  //   coupleNames: 'Yash & Nishita',
-  //   date: '2026-02-18',
-  //   venue: 'Triyuginarayan Temple',
-  //   location: 'Rudraprayag, Uttarakhand',
-  //   featuredCover: 'https://img.youtube.com/vi/KQ3V3IqcAls/maxresdefault.jpg',
-  //   hasPhotoGallery: false,
-  //   services: ['Wedding Film'],
-  //   eventTags: ['Engagement', 'Haldi', 'Wedding Film'],
-  //   films: {
-  //     weddingFilmUrl: 'https://www.youtube.com/watch?v=KQ3V3IqcAls',
-  //     weddingFilmThumbnail: 'https://img.youtube.com/vi/KQ3V3IqcAls/maxresdefault.jpg',
-  //     weddingFilmPriority: 1,      // #1 when on "Wedding Film" filter
-  //     weddingFilmAllPriority: 2,   // #2 when on "All" filter
-  //   },
-  //   testimonial: {
-  //     quote: 'They captured the sanctity and grandeur of Triyuginarayan with sublime reverence.',
-  //     narrative:
-  //       'Filming an ancient temple wedding at altitude has its own challenges, but the team navigated the sacred rituals with complete respect and produced a film that moves us to tears every single watch.',
-  //   },
-  //   events: [],
-  // },
+  {
+    slug: 'yash-nishita',
+    coupleNames: 'Yash & Nishita',
+    date: '2026-02-18',
+    venue: 'Triyuginarayan Temple',
+    location: 'Rudraprayag, Uttarakhand',
+    featuredCover: 'https://img.youtube.com/vi/KQ3V3IqcAls/maxresdefault.jpg',
+    hasPhotoGallery: false,
+    services: ['Wedding Film'],
+    eventTags: ['Engagement', 'Haldi', 'Wedding Film'],
+    films: {
+      weddingFilmUrl: 'https://www.youtube.com/watch?v=KQ3V3IqcAls',
+      weddingFilmThumbnail: 'https://img.youtube.com/vi/KQ3V3IqcAls/maxresdefault.jpg',
+      weddingFilmPriority: 1,      // #1 when on "Wedding Film" filter
+      weddingFilmAllPriority: 2,   // #2 when on "All" filter
+    },
+    testimonial: {
+      quote: 'They captured the sanctity and grandeur of Triyuginarayan with sublime reverence.',
+      narrative:
+        'Filming an ancient temple wedding at altitude has its own challenges, but the team navigated the sacred rituals with complete respect and produced a film that moves us to tears every single watch.',
+    },
+    events: [],
+  },
 ];
 
 // Lookup Helpers

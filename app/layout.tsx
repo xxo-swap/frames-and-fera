@@ -4,6 +4,7 @@ import { Cormorant_Garamond, Montserrat } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import SocialFloatingPopup from '@/components/SocialFloatingPopup';
 
 // Primary Editorial Font (Naman Verma style serif)
 const cormorant = Cormorant_Garamond({
@@ -34,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cormorant.variable} ${montserrat.variable}`}>
       <body className="antialiased bg-[#f3d0bc] text-[#211102] selection:bg-[#211102] selection:text-[#f3d0bc]">
+        <SocialFloatingPopup />
         <Header />
         {children}
         <Footer />

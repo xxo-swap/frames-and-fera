@@ -85,7 +85,7 @@ export default function EditorialQuoteSection() {
         {/* Subtle Category Kicker */}
         <span
           ref={badgeRef}
-          className="text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-brand-text/60 mb-6 block font-sans"
+          className="text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-brand-text/60 mb-6 block font-serif"
         >
           Fine Art Philosophy
         </span>
@@ -126,8 +126,8 @@ export default function EditorialQuoteSection() {
           {/* Editorial Calligraphic Signature Accent */}
           <p
             ref={signatureRef}
-            className="font-serif italic text-3xl sm:text-4xl text-brand-accent/80 pt-3 select-none will-change-transform"
-            style={{ fontFamily: 'var(--font-serif), Georgia, serif' }}
+            className="font-sans uppercase text-3xl sm:text-4xl text-brand-accent/80 pt-3 select-none will-change-transform"
+            
           >
             Frames and Fera
           </p>
